@@ -108,6 +108,13 @@ tenancyAPI.users().list(5).forEachIndexed { i, user ->
 
 ```
 
+## Runing tests
+
+Set up `test_config.json` based on `test_config.example.json` (retrieve your client credentials from the [Upvest account management](https://login.upvest.co/)), then run
+```
+./gradlew test
+```
+
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/hangyas/upvest-jvm-client.

@@ -22,11 +22,10 @@ class KotlinCompatibilityTest {
 
         val username = "user_" + java.time.Instant.now().getEpochSecond().toString()
         val pass1 = "password"
-        val pass2 = "n3w-password"
-
+        
         val user: User = tenancyAPI.users().create(username, pass1, arrayOf<String>())
         assertEquals(user.getUsername(), user.username)
-        assertEquals(user.getWalletIds(), user.walletIds)
+        assertEquals(user.getWalletIds()?.size, user.walletIds?.size)
         assertEquals(user.getRecoverykit(), user.recoverykit)
     }
 

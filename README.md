@@ -12,7 +12,7 @@ repositories {
     maven { url "https://jitpack.io" }
 }
 dependencies {
-        implementation "co.upvest:api-client:1.0"
+    implementation "co.upvest:api-client:1.0"
 }
 
 ```
@@ -198,7 +198,7 @@ Wallet wallet = clientele.wallets().create("asset_id","password");
 Cursor<Transaction> transactions = wallet.transactions().list(8);
 ```
 
-#### Usege of Cursor\<T>
+#### Usage of Cursor\<T>
 
 ##### Load the first 10 users
 ```java

@@ -1,12 +1,14 @@
-package co.upvest;
+package co.upvest.models;
+
+import co.upvest.endpoints.*;
 
 import com.squareup.moshi.*;
 
-class WalletAdapter {
+public class WalletAdapter {
 
     private WalletsEndpoint walletsEndpoint;
 
-    WalletAdapter(WalletsEndpoint walletsEndpoint) {
+    public WalletAdapter(WalletsEndpoint walletsEndpoint) {
         this.walletsEndpoint = walletsEndpoint;
     }
 

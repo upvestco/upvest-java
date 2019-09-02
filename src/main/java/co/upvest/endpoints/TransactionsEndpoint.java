@@ -1,11 +1,14 @@
-package co.upvest;
+package co.upvest.endpoints;
+
+import co.upvest.*;
+import co.upvest.models.*;
 
 import java.io.IOException;
 import okhttp3.*;
 import com.squareup.moshi.*;
 import java.util.*;
 
-class TransactionsEndpoint implements Transaction.Endpoint<Transaction> {
+public class TransactionsEndpoint implements Transaction.Endpoint<Transaction> {
 
     private APIClient apiClient;
     private Wallet wallet;
@@ -19,7 +22,7 @@ class TransactionsEndpoint implements Transaction.Endpoint<Transaction> {
     final JsonAdapter<Transaction> transactionAdapter = moshi.adapter(Transaction.class);
     final JsonAdapter<Cursor<Transaction>> transactionCursorAdapter = moshi.adapter(Types.newParameterizedType(Cursor.class, Transaction.class));
 
-    TransactionsEndpoint(APIClient apiClient, Wallet wallet) {
+    public TransactionsEndpoint(APIClient apiClient, Wallet wallet) {
         this.apiClient = apiClient;
         this.wallet = wallet;
     }

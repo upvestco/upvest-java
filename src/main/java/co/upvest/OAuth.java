@@ -1,10 +1,13 @@
 package co.upvest;
 
+import co.upvest.endpoints.*;
+import co.upvest.models.*;
+
 import java.io.IOException;
 import com.squareup.moshi.Json;
 import okhttp3.*;
 
-class OAuth extends Auth {
+public class OAuth extends Auth {
     
     @Json(name = "access_token") private String accessToken;
     @Json(name = "expires_in") private int expiresIn;

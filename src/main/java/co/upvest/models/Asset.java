@@ -1,4 +1,4 @@
-package co.upvest;
+package co.upvest.models;
 
 import org.jetbrains.annotations.NotNull;
 

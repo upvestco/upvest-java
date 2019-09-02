@@ -1,8 +1,8 @@
-package co.upvest;
+package co.upvest.models;
 
 import org.jetbrains.annotations.NotNull;
 
-class Echo {
+public class Echo {
 
     private @NotNull String echo;
 
@@ -10,7 +10,7 @@ class Echo {
         this.echo = echo;
     }
 
-    @NotNull String getEcho() {
+    public @NotNull String getEcho() {
         return this.echo;
     }
 }

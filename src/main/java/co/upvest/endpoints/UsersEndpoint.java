@@ -1,4 +1,7 @@
-package co.upvest;
+package co.upvest.endpoints;
+
+import co.upvest.*;
+import co.upvest.models.*;
 
 import java.io.IOException;
 import okhttp3.*;
@@ -6,7 +9,7 @@ import com.squareup.moshi.*;
 import java.util.*;
 import org.jetbrains.annotations.*;
 
-class UsersEndpoint implements User.Endpoint<User> {
+public class UsersEndpoint implements User.Endpoint<User> {
 
     private TenancyAPI apiClient;
 
@@ -16,7 +19,7 @@ class UsersEndpoint implements User.Endpoint<User> {
     final JsonAdapter<User> userJsonAdapter = moshi.adapter(User.class);
     final JsonAdapter<Cursor<User>> userCursorAdapter = moshi.adapter(Types.newParameterizedType(Cursor.class, User.class));
 
-    UsersEndpoint(@NotNull TenancyAPI tenancy) {
+    public UsersEndpoint(@NotNull TenancyAPI tenancy) {
         this.apiClient = tenancy;
     }
 
@@ -149,6 +152,5 @@ class UsersEndpoint implements User.Endpoint<User> {
         Response response = apiClient.client.newCall(request).execute();
         return response.code() == 204;
     }
-
 
 }

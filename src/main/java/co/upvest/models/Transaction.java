@@ -1,11 +1,11 @@
-package co.upvest;
+package co.upvest.models;
 
 import com.squareup.moshi.Json;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-class Transaction implements Listable {
+public class Transaction implements Listable {
 
     private @NotNull String id;
     private @NotNull String txhash;
@@ -17,9 +17,10 @@ class Transaction implements Listable {
     private @Nullable String quantity;
     private @Nullable String fee;
     private @Nullable String status;
+    private @Nullable int exponent;
 
     public Transaction(@NotNull String id, @NotNull String txhash, @NotNull String walletId, @NotNull String assetName, @NotNull String assetId, @NotNull String sender, @Nullable String recipient,
-    @Nullable String quantity, @Nullable String fee, @Nullable String status) {
+    @Nullable String quantity, @Nullable String fee, @Nullable String status, int exponent) {
         this.id = id;
         this.txhash = txhash;
         this.walletId = walletId;
@@ -30,6 +31,7 @@ class Transaction implements Listable {
         this.quantity = quantity;
         this.fee = fee;
         this.status = status;
+        this.exponent = exponent;
     }
 
     public @NotNull String getId() {
@@ -70,6 +72,10 @@ class Transaction implements Listable {
 
     public @Nullable String getStatus() {
         return status;
+    }
+
+    public @Nullable int getExponent() {
+        return this.exponent;
     }
     
 }

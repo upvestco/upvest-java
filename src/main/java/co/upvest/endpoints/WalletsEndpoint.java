@@ -1,4 +1,9 @@
-package co.upvest;
+package co.upvest.endpoints;
+
+import co.upvest.endpoints.WalletsEndpoint;
+
+import co.upvest.*;
+import co.upvest.models.*;
 
 import java.io.IOException;
 import okhttp3.*;
@@ -8,7 +13,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-class WalletsEndpoint implements Wallet.Endpoint<Wallet> {
+public class WalletsEndpoint implements Wallet.Endpoint<Wallet> {
 
     private APIClient apiClient;
 
@@ -24,7 +29,7 @@ class WalletsEndpoint implements Wallet.Endpoint<Wallet> {
     final JsonAdapter<Cursor<Wallet>> walletCursorAdapter;
     final JsonAdapter<Signature> signatureAdapter;
 
-    WalletsEndpoint(@NotNull APIClient apiClient) {
+    public WalletsEndpoint(@NotNull APIClient apiClient) {
         this.apiClient = apiClient;
 
         walletAdapter = moshi.adapter(Wallet.class);
@@ -158,7 +163,7 @@ class WalletsEndpoint implements Wallet.Endpoint<Wallet> {
         return signature;
     }
 
-    APIClient getAPIClient() {
+    public APIClient getAPIClient() {
         return apiClient;
     }
 }

@@ -1,10 +1,12 @@
-package co.upvest;
+package co.upvest.models;
+
+import co.upvest.endpoints.*;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 
-class Wallet implements Listable {
+public class Wallet implements Listable {
 
     private WalletsEndpoint walletsEndpoint;
 

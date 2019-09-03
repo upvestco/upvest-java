@@ -41,4 +41,23 @@ public class OAuth extends Auth {
         return chain.proceed(request);
     }
 
+    public String getAccessToken() {
+        return accessToken;
+    }
+
+    public int getExpiresIn() {
+        return expiresIn;
+    }
+
+    public String getTokenType() {
+        return tokenType;
+    }
+
+    public String getScope() {
+        return scope;
+    }
+
+    public String getRefreshToken() {
+        return refreshToken;
+    }
 }

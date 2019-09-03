@@ -70,11 +70,11 @@ public class Signature {
             this.y = y;
         }
 
-        @NotNull String getX() {
+        public @NotNull String getX() {
             return x;
         }
 
-        @NotNull String getY() {
+        public @NotNull String getY() {
             return y;
         }
     }

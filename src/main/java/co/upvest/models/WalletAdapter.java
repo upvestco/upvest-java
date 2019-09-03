@@ -18,6 +18,7 @@ public class WalletAdapter {
             walletJson.balances,
             walletJson.protocol,
             walletJson.address,
+            walletJson.index,
             walletJson.status,
             walletsEndpoint
         );
@@ -30,6 +31,7 @@ public class WalletAdapter {
             wallet.getBalances(),
             wallet.getProtocol(),
             wallet.getAddress(),
+            wallet.getIndex(),
             wallet.getStatus()
         );
         return walletJson;
@@ -41,13 +43,15 @@ public class WalletAdapter {
         Balance[] balances;
         String protocol;
         String address;
+        int index;
         String status;
 
-        public WalletJson(String id, Balance[] balances, String protocol, String address, String status) {
+        public WalletJson(String id, Balance[] balances, String protocol, String address, int index, String status) {
             this.id = id;
             this.balances = balances;
             this.protocol = protocol;
             this.address = address;
+            this.index = index;
             this.status = status;
         }
         

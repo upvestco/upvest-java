@@ -1,5 +1,7 @@
 package co.upvest
 
+import co.upvest.models.*
+
 import org.junit.Test
 import org.junit.Assert.*
 

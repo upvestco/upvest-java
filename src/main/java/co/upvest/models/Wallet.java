@@ -2,7 +2,7 @@ package co.upvest.models;
 
 import co.upvest.endpoints.*;
 
-import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.*;
 
 import java.io.IOException;
 
@@ -14,17 +14,15 @@ public class Wallet implements Listable {
     private @NotNull Balance[] balances;
     private @NotNull String protocol;
     private @NotNull String address;
-    private @NotNull int index;
     private @NotNull String status;
 
     private TransactionsEndpoint transactionsEndpoint;
 
-    Wallet (String id, Balance[] balances, String protocol, String address, int index, String status, WalletsEndpoint walletsEndpoint) {
+    Wallet (String id, Balance[] balances, String protocol, String address, String status, WalletsEndpoint walletsEndpoint) {
         this.id = id;
         this.balances = balances;
         this.protocol = protocol;
         this.address = address;
-        this.index = index;
         this.status = status;
         this.walletsEndpoint = walletsEndpoint;
     }
@@ -49,10 +47,6 @@ public class Wallet implements Listable {
 
     public String getAddress() {
         return address;
-    }
-
-    public int getIndex() {
-        return index;
     }
 
     public String getStatus() {

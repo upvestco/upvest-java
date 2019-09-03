@@ -259,7 +259,7 @@ public class ModelTest {
         assertEquals(id, wallet.getId());
         assertEquals(protocol, wallet.getProtocol());
         assertEquals(address, wallet.getAddress());
-        assertEquals(index, wallet.getIndex());
+        // assertEquals(index, wallet.getIndex());
         assertEquals(status, wallet.getStatus());
 
         assertEquals(name, wallet.getBalances()[0].getName());

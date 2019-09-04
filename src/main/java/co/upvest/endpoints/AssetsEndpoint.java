@@ -42,7 +42,7 @@ public class AssetsEndpoint implements Asset.Endpoint<Asset> {
             .url(url)
             .build();
 
-        Response response = apiClient.client.newCall(request).execute();
+        Response response = apiClient.getClient().newCall(request).execute();
         Cursor<Asset> assets = assetsCursorAdapter.fromJson(response.body().source());
         assets.setEndpoint(this);
         return assets;
@@ -68,7 +68,7 @@ public class AssetsEndpoint implements Asset.Endpoint<Asset> {
             .url(url)
             .build();
 
-        Response response = apiClient.client.newCall(request).execute();
+        Response response = apiClient.getClient().newCall(request).execute();
         Cursor<Asset> assets = assetsCursorAdapter.fromJson(response.body().source());
         assets.setEndpoint(this);
         return assets;
@@ -84,8 +84,12 @@ public class AssetsEndpoint implements Asset.Endpoint<Asset> {
                 .url(url)
                 .build();
 
-        Response response = apiClient.client.newCall(request).execute();
+        Response response = apiClient.getClient().newCall(request).execute();
         Asset asset = assetAdapter.fromJson(response.body().source());
         return asset;
+    }
+
+    APIClient getApiClient() {
+        return this.apiClient;
     }
 }

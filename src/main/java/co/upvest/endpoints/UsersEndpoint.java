@@ -42,7 +42,7 @@ public class UsersEndpoint implements User.Endpoint<User> {
             .url(url)
             .build();
 
-        Response response = apiClient.client.newCall(request).execute();
+        Response response = apiClient.getClient().newCall(request).execute();
         Cursor<User> users = userCursorAdapter.fromJson(response.body().source());
         users.setEndpoint(this);
         return users;
@@ -69,7 +69,7 @@ public class UsersEndpoint implements User.Endpoint<User> {
                 .url(url)
                 .build();
 
-        Response response = apiClient.client.newCall(request).execute();
+        Response response = apiClient.getClient().newCall(request).execute();
         Cursor<User> users = userCursorAdapter.fromJson(response.body().source());
         users.setEndpoint(this);
         return users;
@@ -92,7 +92,7 @@ public class UsersEndpoint implements User.Endpoint<User> {
             .post(RequestBody.create(JSON, apiClient.objectAdapter.toJson(params)))
             .build();
 
-        Response response = apiClient.client.newCall(request).execute();
+        Response response = apiClient.getClient().newCall(request).execute();
         User user = userJsonAdapter.fromJson(response.body().source());
         
         return user;
@@ -109,7 +109,7 @@ public class UsersEndpoint implements User.Endpoint<User> {
             .url(url)
             .build();
 
-        Response response = apiClient.client.newCall(request).execute();
+        Response response = apiClient.getClient().newCall(request).execute();
         User user = userJsonAdapter.fromJson(response.body().source());
         
         return user;
@@ -131,7 +131,7 @@ public class UsersEndpoint implements User.Endpoint<User> {
             .patch(RequestBody.create(JSON, apiClient.objectAdapter.toJson(params)))
             .build();
 
-        Response response = apiClient.client.newCall(request).execute();
+        Response response = apiClient.getClient().newCall(request).execute();
         User user = userJsonAdapter.fromJson(response.body().source());
         
         return user;
@@ -149,8 +149,12 @@ public class UsersEndpoint implements User.Endpoint<User> {
             .delete()
             .build();
         
-        Response response = apiClient.client.newCall(request).execute();
+        Response response = apiClient.getClient().newCall(request).execute();
         return response.code() == 204;
+    }
+
+    APIClient getApiClient() {
+        return this.apiClient;
     }
 
 }

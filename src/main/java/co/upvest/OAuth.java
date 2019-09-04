@@ -1,8 +1,5 @@
 package co.upvest;
 
-import co.upvest.endpoints.*;
-import co.upvest.models.*;
-
 import java.io.IOException;
 import com.squareup.moshi.Json;
 import okhttp3.*;

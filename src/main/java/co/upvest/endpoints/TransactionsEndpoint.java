@@ -48,7 +48,7 @@ public class TransactionsEndpoint implements Transaction.Endpoint<Transaction> {
                 .post(RequestBody.create(JSON, objectAdapter.toJson(params)))
                 .build();
 
-        Response response = apiClient.client.newCall(request).execute();
+        Response response = apiClient.getClient().newCall(request).execute();
         Transaction transaction = transactionAdapter.fromJson(response.body().source());
         
         return transaction;
@@ -75,7 +75,7 @@ public class TransactionsEndpoint implements Transaction.Endpoint<Transaction> {
                 .url(url)
                 .build();
 
-        Response response = apiClient.client.newCall(request).execute();
+        Response response = apiClient.getClient().newCall(request).execute();
         Cursor<Transaction> transactions = transactionCursorAdapter.fromJson(response.body().source());
         transactions.setEndpoint(this);
         return transactions;
@@ -104,7 +104,7 @@ public class TransactionsEndpoint implements Transaction.Endpoint<Transaction> {
                 .url(url)
                 .build();
 
-        Response response = apiClient.client.newCall(request).execute();
+        Response response = apiClient.getClient().newCall(request).execute();
         Cursor<Transaction> transactions = transactionCursorAdapter.fromJson(response.body().source());
         transactions.setEndpoint(this);
         
@@ -124,10 +124,14 @@ public class TransactionsEndpoint implements Transaction.Endpoint<Transaction> {
                 .url(url)
                 .build();
 
-        Response response = apiClient.client.newCall(request).execute();
+        Response response = apiClient.getClient().newCall(request).execute();
         Transaction transaction = transactionAdapter.fromJson(response.body().source());
         
         return transaction;
+    }
+
+    APIClient getApiClient() {
+        return this.apiClient;
     }
 
 }

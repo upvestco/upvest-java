@@ -24,7 +24,7 @@ public abstract class APIClient {
 
     protected String host;
 
-    public OkHttpClient client;
+    protected OkHttpClient client;
 
     public final HttpUrl.Builder getBaseUrl() {
         return new HttpUrl.Builder()
@@ -41,4 +41,7 @@ public abstract class APIClient {
         APIClient.defaultHost = defaultHost;
     }
 
+    public OkHttpClient getClient() {
+        return client;
+    }
 }

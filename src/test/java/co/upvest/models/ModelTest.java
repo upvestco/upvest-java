@@ -1,6 +1,6 @@
-package co.upvest;
+package co.upvest.models;
 
-import co.upvest.models.*;
+import co.upvest.*;
 
 import com.squareup.moshi.*;
 
@@ -11,21 +11,19 @@ import java.io.IOException;
 
 public class ModelTest {
 
-    final Moshi moshi = new Moshi.Builder()
+    public static final Moshi moshi = new Moshi.Builder()
         .add(new WalletAdapter(null))
         .build();
-    final private JsonAdapter<Echo> echoJsonAdapter = moshi.adapter(Echo.class);
-    final private JsonAdapter<Asset> assetJsonAdapter = moshi.adapter(Asset.class);
-    final private JsonAdapter<AssetMetadata> assetMetadataJsonAdapter = moshi.adapter(AssetMetadata.class);
-    final private JsonAdapter<Balance> balanceJsonAdapter = moshi.adapter(Balance.class);
-    final private JsonAdapter<Signature.PublicKey> publicKeyJsonAdapter = moshi.adapter(Signature.PublicKey.class);
-    final private JsonAdapter<Signature> signatureJsonAdapter = moshi.adapter(Signature.class);
-    final private JsonAdapter<Transaction> transactionJsonAdapter = moshi.adapter(Transaction.class);
-    final private JsonAdapter<User> userJsonAdapter = moshi.adapter(User.class);
-    final JsonAdapter<Wallet> walletAdapter = moshi.adapter(Wallet.class);
-    final JsonAdapter<OAuth> oAuthAdapter = moshi.adapter(OAuth.class);
-
-    final JsonAdapter<Cursor<User>> userCursorAdapter = moshi.adapter(Types.newParameterizedType(Cursor.class, User.class));
+    public static final JsonAdapter<Echo> echoJsonAdapter = moshi.adapter(Echo.class);
+    public static final JsonAdapter<Asset> assetJsonAdapter = moshi.adapter(Asset.class);
+    public static final JsonAdapter<AssetMetadata> assetMetadataJsonAdapter = moshi.adapter(AssetMetadata.class);
+    public static final JsonAdapter<Balance> balanceJsonAdapter = moshi.adapter(Balance.class);
+    public static final JsonAdapter<Signature.PublicKey> publicKeyJsonAdapter = moshi.adapter(Signature.PublicKey.class);
+    public static final JsonAdapter<Signature> signatureJsonAdapter = moshi.adapter(Signature.class);
+    public static final JsonAdapter<Transaction> transactionJsonAdapter = moshi.adapter(Transaction.class);
+    public static final JsonAdapter<User> userJsonAdapter = moshi.adapter(User.class);
+    public static final JsonAdapter<Wallet> walletAdapter = moshi.adapter(Wallet.class);
+    public static final JsonAdapter<OAuth> oAuthAdapter = moshi.adapter(OAuth.class);
     
     @Test
     public void testEcho() throws IOException {
@@ -52,34 +50,34 @@ public class ModelTest {
     }
 
     @Test public void testAsset() throws IOException {
-            String id = "cfc59efb-3b21-5340-ae96-8cadb4ce31a8";
-            String name = "Example coin (Ropsten)";
-            String symbol = "COIN";
-            int exponent = 12;
-            String protocol = "erc20_ropsten";
-            
-            int chainId = 3;
-            String contract = "0xb95185ca02B704e46721d878EE7f566C6a2a959f";
-    
-            String source = "{" +
-                "\"id\" : \"" + id + "\"," +
-                "\"name\" : \"" + name + "\"," +
-                "\"symbol\" : \"" + symbol + "\"," +
-                "\"exponent\" : \"" + exponent + "\"," +
-                "\"protocol\" : \"" + protocol + "\"," +
-                "\"metadata\" : {" +
-                    "\"chain_id\": " + chainId + "," + 
-                    "\"contract\":\"" + contract + "\"" + 
-                "}" +
-            "}";
+        String id = "cfc59efb-3b21-5340-ae96-8cadb4ce31a8";
+        String name = "Example coin (Ropsten)";
+        String symbol = "COIN";
+        int exponent = 12;
+        String protocol = "erc20_ropsten";
+        
+        int chainId = 3;
+        String contract = "0xb95185ca02B704e46721d878EE7f566C6a2a959f";
 
-            Asset asset = assetJsonAdapter.fromJson(source);
+        String source = "{" +
+            "\"id\" : \"" + id + "\"," +
+            "\"name\" : \"" + name + "\"," +
+            "\"symbol\" : \"" + symbol + "\"," +
+            "\"exponent\" : \"" + exponent + "\"," +
+            "\"protocol\" : \"" + protocol + "\"," +
+            "\"metadata\" : {" +
+                "\"chain_id\": " + chainId + "," + 
+                "\"contract\":\"" + contract + "\"" + 
+            "}" +
+        "}";
 
-            assertEquals(id, asset.getId());
-            assertEquals(name, asset.getName());
-            assertEquals(symbol, asset.getSymbol());
-            assertEquals(exponent, asset.getExponent());
-            assertEquals(protocol, asset.getProtocol());
+        Asset asset = assetJsonAdapter.fromJson(source);
+
+        assertEquals(id, asset.getId());
+        assertEquals(name, asset.getName());
+        assertEquals(symbol, asset.getSymbol());
+        assertEquals(exponent, asset.getExponent());
+        assertEquals(protocol, asset.getProtocol());
     }
 
     @Test
@@ -292,49 +290,4 @@ public class ModelTest {
         assertEquals(scope, oAuth.getScope());
         assertEquals(refreshToken, oAuth.getRefreshToken());
     }
-
-    @Test
-    public void testCursor() throws IOException {
-        String previous = "https://api.playground.upvest.co/1.0/kms/wallets/?cursor=abc";
-        String next = "https://api.playground.upvest.co/1.0/kms/wallets/?cursor=xyz";
-
-        String username = "Jane Doe";
-        String recoverykit = "<svg height='125mm' version='1.1' viewBox='0 0 125 125' width='125mm' xmlns='http://www.w3.org/2000/ ...";
-        String[] walletIds = new String[]{
-            "7e0af700-baed-45c2-9455-e43f88e9501a",
-            "8bd7a1ef-4a92-4767-b59a-714cb487cbd9"
-        };
-
-        String source = "{" +
-            "\"previous\": \"" + previous + "\"," +
-            "\"next\": \"" + next + "\"," +
-            "\"results\": [{" +
-                "\"username\": \"" + username + "\"," +
-                "\"recoverykit\": \"" + recoverykit + "\"," +
-                "\"wallet_ids\": [" +
-                    "\"" + walletIds[0] + "\"," +
-                    "\"" + walletIds[1] + "\"" +
-                "]"+
-            "}]" +
-        "}";
-
-        Cursor<User> users = userCursorAdapter.fromJson(source);
-
-        assertEquals(username, users.toArray()[0].getUsername());
-        assertEquals(recoverykit, users.toArray()[0].getRecoverykit());
-        assertEquals(walletIds[0], users.toArray()[0].getWalletIds()[0]);
-        assertEquals(walletIds[1], users.toArray()[0].getWalletIds()[1]);
-        
-        int counter = 0;
-        for (User user : users) {
-            counter++;
-        }
-
-        assertEquals(users.toArray().length, counter);
-        assertEquals(1, counter);
-        assertTrue(users.hasNextPage());
-        assertTrue(users.hasPreviousPage());
-    }
-
-
 }

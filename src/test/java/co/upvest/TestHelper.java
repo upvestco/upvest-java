@@ -17,7 +17,7 @@ import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-class TestHelper {
+public class TestHelper {
 
     static TenancyAPI tenancyAPI;
     static ClienteleAPI commonClienteleAPI;
@@ -35,19 +35,19 @@ class TestHelper {
         }
     }
 
-    static TenancyAPI getTenancyAPI() {
+    public static TenancyAPI getTenancyAPI() {
         if (tenancyAPI == null)
             tenancyAPI = new TenancyAPI(config.getString("API_KEY"), config.getString("API_SECRET"), config.getString("API_PASSPHRASE"));
         return tenancyAPI;
     }
 
-    static ClienteleAPI getClienteleAPI() throws IOException {
+    public static ClienteleAPI getClienteleAPI() throws IOException {
         if (commonClienteleAPI == null)
             commonClienteleAPI = getClienteleAPI(getUser().getUsername(), commonPassword);
         return commonClienteleAPI;
     }
 
-    static ClienteleAPI getClienteleAPI(String username, String password) throws IOException {
+    public static ClienteleAPI getClienteleAPI(String username, String password) throws IOException {
         return new ClienteleAPI(
             config.getString("OAUTH2_CLIENT_ID"),
             config.getString("OAUTH2_CLIENT_SECRET"),
@@ -56,7 +56,7 @@ class TestHelper {
         );
     }
 
-    static User getUser() throws IOException {
+    public static User getUser() throws IOException {
         if (commonUser == null) {
             String username = "user_" + String.valueOf(java.time.Instant.now().getEpochSecond());
             commonPassword = "psswd_" + String.valueOf(java.time.Instant.now().getEpochSecond());
@@ -65,7 +65,7 @@ class TestHelper {
         return commonUser;
     }
 
-    static boolean isValidRecoveryKit(String input) throws ParserConfigurationException, IOException, SAXException {
+    public static boolean isValidRecoveryKit(String input) throws ParserConfigurationException, IOException, SAXException {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setValidating(true);
         factory.setIgnoringElementContentWhitespace(true);
@@ -75,7 +75,7 @@ class TestHelper {
         return doc.getDocumentElement() != null;
     }
 
-    static String getRandomHexString(int numchars){
+    public static String getRandomHexString(int numchars){
         Random r = new Random();
         StringBuffer sb = new StringBuffer();
         while(sb.length() < numchars){
@@ -85,7 +85,7 @@ class TestHelper {
         return sb.toString().substring(0, numchars);
     }
 
-    static int getBalanceForAssetId(Wallet wallet, String assetId) {
+    public static int getBalanceForAssetId(Wallet wallet, String assetId) {
         return 0;
     //     for (Balance balance : wallet.getBalances()) {
     //         if (balance.getSymbol())
@@ -97,5 +97,35 @@ class TestHelper {
     //     });
         // }
     // return balance;
+    }
+
+    public static Wallet getWallet() throws IOException {
+        String id = "3bf016a1-24d4-46e4-9800-9e3f223b9fab";
+        String protocol = "co.upvest.kinds.Erc20";
+        String address = "0x0123456789ABCDEF";
+        int index = 0;
+        String status = "ACTIVE";        
+        
+        String name = "Example coin (Ropsten)";
+        String symbol = "COIN";
+        int exponent = 12;
+        String amount = "100";
+
+        String source = "{" +
+            "\"id\": \"" + id + "\"," +
+            "\"protocol\": \"" + protocol + "\"," +
+            "\"address\": \"" + address + "\"," +
+            "\"index\": \"" + index + "\"," +
+            "\"status\": \"" + status + "\"," +
+            "\"balances\": [{" +
+                "\"name\" : \"" + name + "\"," +
+                "\"symbol\" : \"" + symbol + "\"," +
+                "\"exponent\" : " + exponent + "," +
+                "\"amount\" : \"" + amount + "\"" +
+            "}]" +
+        "}";
+
+        Wallet wallet = ModelTest.walletAdapter.fromJson(source);
+        return wallet;
     }
 }

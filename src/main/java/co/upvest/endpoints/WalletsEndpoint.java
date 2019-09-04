@@ -61,7 +61,7 @@ public class WalletsEndpoint implements Wallet.Endpoint<Wallet> {
             .post(RequestBody.create(JSON, objectAdapter.toJson(params)))
             .build();
 
-        Response response = apiClient.client.newCall(request).execute();
+        Response response = apiClient.getClient().newCall(request).execute();
         Wallet wallet = walletAdapter.fromJson(response.body().source());
         
         return wallet;
@@ -86,7 +86,7 @@ public class WalletsEndpoint implements Wallet.Endpoint<Wallet> {
             .url(url)
             .build();
 
-        Response response = apiClient.client.newCall(request).execute();
+        Response response = apiClient.getClient().newCall(request).execute();
         Cursor<Wallet> wallets = walletCursorAdapter.fromJson(response.body().source());
         wallets.setEndpoint(this);
 
@@ -114,7 +114,7 @@ public class WalletsEndpoint implements Wallet.Endpoint<Wallet> {
             .url(url)
             .build();
 
-        Response response = apiClient.client.newCall(request).execute();
+        Response response = apiClient.getClient().newCall(request).execute();
         Cursor<Wallet> wallets = walletCursorAdapter.fromJson(response.body().source());
         wallets.setEndpoint(this);
 
@@ -132,7 +132,7 @@ public class WalletsEndpoint implements Wallet.Endpoint<Wallet> {
             .url(url)
             .build();
 
-        Response response = apiClient.client.newCall(request).execute();
+        Response response = apiClient.getClient().newCall(request).execute();
         Wallet wallet = walletAdapter.fromJson(response.body().source());
         
         return wallet;
@@ -157,7 +157,7 @@ public class WalletsEndpoint implements Wallet.Endpoint<Wallet> {
             .post(RequestBody.create(JSON, objectAdapter.toJson(params)))
             .build();
 
-        Response response = apiClient.client.newCall(request).execute();
+        Response response = apiClient.getClient().newCall(request).execute();
         Signature signature = signatureAdapter.fromJson(response.body().source());
         
         return signature;
@@ -165,5 +165,9 @@ public class WalletsEndpoint implements Wallet.Endpoint<Wallet> {
 
     public APIClient getAPIClient() {
         return apiClient;
+    }
+
+    APIClient getApiClient() {
+        return this.apiClient;
     }
 }

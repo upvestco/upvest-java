@@ -21,7 +21,9 @@ public class TestHelper {
 
     static TenancyAPI tenancyAPI;
     static ClienteleAPI commonClienteleAPI;
+    static ClienteleAPI moneyClienteleAPI;
     static User commonUser;
+    static User userWithMoney;
     static String commonPassword;
 
     static JSONObject config;
@@ -47,6 +49,13 @@ public class TestHelper {
         return commonClienteleAPI;
     }
 
+
+    public static ClienteleAPI getClienteleAPIWithMoney() throws IOException {
+        if (moneyClienteleAPI == null)
+            moneyClienteleAPI = getClienteleAPI(config.getJSONObject("user").getString("username"), config.getJSONObject("user").getString("password"));
+        return moneyClienteleAPI;
+    }
+
     public static ClienteleAPI getClienteleAPI(String username, String password) throws IOException {
         return new ClienteleAPI(
             config.getString("OAUTH2_CLIENT_ID"),
@@ -63,6 +72,13 @@ public class TestHelper {
             commonUser = getTenancyAPI().users().create(username, commonPassword, new String[]{});
         }
         return commonUser;
+    }
+
+    public static User getUserWithMoney() throws IOException {
+        if (userWithMoney == null) {
+            userWithMoney = getTenancyAPI().users().get(config.getJSONObject("user").getString("username"));
+        }
+        return userWithMoney;
     }
 
     public static boolean isValidRecoveryKit(String input) throws ParserConfigurationException, IOException, SAXException {

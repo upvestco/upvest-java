@@ -273,9 +273,10 @@ That"s it! Jane has successfully sent a transaction and is able to monitor it vi
 
 ## Runing tests
 
-Set up `test_config.json` based on `test_config.example.json` (retrieve your client credentials from the [Upvest account management](https://login.upvest.co/)), then run
+Set up `test_config.json` based on `test_config.example.json` (retrieve your client credentials from the [Upvest account management](https://login.upvest.co/), and transfer some test Ether to the user’s wallet), then run
 ```
-./gradlew test
+./gradlew unitTest
+./gradlew integrationTest
 ```
 
 ## Contributing

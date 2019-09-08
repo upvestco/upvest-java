@@ -23,3 +23,38 @@ dependencies {
 
     testImplementation 'org.json:json:20180813'
 }
+
+sourceSets {
+  unitTest {
+    java.srcDir 'src/test/unit/java'
+    resources.srcDir 'src/test/resources'
+    compileClasspath += main.output + test.output
+    runtimeClasspath += main.output + test.output
+  }
+  integrationTest {
+    java.srcDir 'src/test/integration/java'
+    resources.srcDir 'src/test/resources'
+    compileClasspath += main.output + test.output
+    runtimeClasspath += main.output + test.output
+  }
+}
+
+configurations {
+  unitTestCompile.extendsFrom testCompile
+  unitTestImplementation.extendsFrom testImplementation
+  unitTestRuntime.extendsFrom testRuntime
+
+  integrationTestCompile.extendsFrom testCompile
+  integrationTestImplementation.extendsFrom testImplementation
+  integrationTestRuntime.extendsFrom testRuntime
+}
+
+task unitTest(type: Test, description: 'Runs the unit tests.', group: 'Verification') {
+  testClassesDirs = sourceSets.unitTest.output.classesDirs
+  classpath = sourceSets.unitTest.runtimeClasspath
+}
+
+task integrationTest(type: Test, description: 'Runs the integration tests.', group: 'Verification') {
+  testClassesDirs = sourceSets.integrationTest.output.classesDirs
+  classpath = sourceSets.integrationTest.runtimeClasspath
+}

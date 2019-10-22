@@ -1,4 +1,9 @@
-package co.upvest;
+package co.upvest.endpoints;
+
+import co.upvest.endpoints.WalletsEndpoint;
+
+import co.upvest.*;
+import co.upvest.models.*;
 
 import java.io.IOException;
 import okhttp3.*;
@@ -8,7 +13,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-class WalletsEndpoint implements Wallet.Endpoint<Wallet> {
+public class WalletsEndpoint implements Wallet.Endpoint<Wallet> {
 
     private APIClient apiClient;
 
@@ -24,7 +29,7 @@ class WalletsEndpoint implements Wallet.Endpoint<Wallet> {
     final JsonAdapter<Cursor<Wallet>> walletCursorAdapter;
     final JsonAdapter<Signature> signatureAdapter;
 
-    WalletsEndpoint(@NotNull APIClient apiClient) {
+    public WalletsEndpoint(@NotNull APIClient apiClient) {
         this.apiClient = apiClient;
 
         walletAdapter = moshi.adapter(Wallet.class);
@@ -56,7 +61,7 @@ class WalletsEndpoint implements Wallet.Endpoint<Wallet> {
             .post(RequestBody.create(JSON, objectAdapter.toJson(params)))
             .build();
 
-        Response response = apiClient.client.newCall(request).execute();
+        Response response = apiClient.getClient().newCall(request).execute();
         Wallet wallet = walletAdapter.fromJson(response.body().source());
         
         return wallet;
@@ -81,7 +86,7 @@ class WalletsEndpoint implements Wallet.Endpoint<Wallet> {
             .url(url)
             .build();
 
-        Response response = apiClient.client.newCall(request).execute();
+        Response response = apiClient.getClient().newCall(request).execute();
         Cursor<Wallet> wallets = walletCursorAdapter.fromJson(response.body().source());
         wallets.setEndpoint(this);
 
@@ -109,7 +114,7 @@ class WalletsEndpoint implements Wallet.Endpoint<Wallet> {
             .url(url)
             .build();
 
-        Response response = apiClient.client.newCall(request).execute();
+        Response response = apiClient.getClient().newCall(request).execute();
         Cursor<Wallet> wallets = walletCursorAdapter.fromJson(response.body().source());
         wallets.setEndpoint(this);
 
@@ -127,7 +132,7 @@ class WalletsEndpoint implements Wallet.Endpoint<Wallet> {
             .url(url)
             .build();
 
-        Response response = apiClient.client.newCall(request).execute();
+        Response response = apiClient.getClient().newCall(request).execute();
         Wallet wallet = walletAdapter.fromJson(response.body().source());
         
         return wallet;
@@ -152,13 +157,17 @@ class WalletsEndpoint implements Wallet.Endpoint<Wallet> {
             .post(RequestBody.create(JSON, objectAdapter.toJson(params)))
             .build();
 
-        Response response = apiClient.client.newCall(request).execute();
+        Response response = apiClient.getClient().newCall(request).execute();
         Signature signature = signatureAdapter.fromJson(response.body().source());
         
         return signature;
     }
 
-    APIClient getAPIClient() {
+    public APIClient getAPIClient() {
         return apiClient;
+    }
+
+    APIClient getApiClient() {
+        return this.apiClient;
     }
 }

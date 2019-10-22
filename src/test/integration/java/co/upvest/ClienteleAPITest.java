@@ -1,5 +1,7 @@
 package co.upvest;
 
+import co.upvest.models.*;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.Test;
@@ -13,11 +15,12 @@ import java.util.Arrays;
 
 public class ClienteleAPITest {
 
-    @Test public void testEcho() {
+    @Test
+    public void testEcho() {
         try {
-            ClienteleAPI clienteleAPI = TestHelper.getClienteleAPI(); 
+            ClienteleAPI clienteleAPI = TestHelper.getClienteleAPI();
             JSONArray arr = TestHelper.config.getJSONArray("strs");
-            for (int i = 0; i < arr.length(); ++i){
+            for (int i = 0; i < arr.length(); ++i) {
                 String echo = clienteleAPI.echo(arr.getString(i)).getEcho();
                 assertEquals(arr.getString(i), echo);
             }
@@ -26,11 +29,12 @@ public class ClienteleAPITest {
         }
     }
 
-    @Test public void testEchoGet() {
+    @Test
+    public void testEchoGet() {
         try {
-            ClienteleAPI clienteleAPI = TestHelper.getClienteleAPI(); 
+            ClienteleAPI clienteleAPI = TestHelper.getClienteleAPI();
             JSONArray arr = TestHelper.config.getJSONArray("strs");
-            for (int i = 0; i < arr.length(); ++i){
+            for (int i = 0; i < arr.length(); ++i) {
                 String echo = clienteleAPI.echoGet(arr.getString(i)).getEcho();
                 assertEquals(arr.getString(i), echo);
             }
@@ -39,12 +43,13 @@ public class ClienteleAPITest {
         }
     }
 
-    @Test public void testAssetsListAndGet() {
+    @Test
+    public void testAssetsListAndGet() {
         try {
             ClienteleAPI clienteleAPI = TestHelper.getClienteleAPI();
-            
+
             Asset[] assets = clienteleAPI.assets().list().toArray();
-            
+
             for (Asset asset : assets) {
                 Asset otherAsset = clienteleAPI.assets().get(asset.getId());
 
@@ -61,42 +66,25 @@ public class ClienteleAPITest {
                 assertEquals("listed and retrieved exponents differ", asset.getExponent(), otherAsset.getExponent());
                 assertEquals("listed and retrieved protocols differ", asset.getProtocol(), otherAsset.getProtocol());
 
-                assertTrue("asset.id  doesn't match UUID pattern", asset.getId().matches("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"));
+                assertTrue("asset.id  doesn't match UUID pattern", asset.getId()
+                        .matches("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"));
             }
         } catch (IOException e) {
             fail(e.getMessage());
         }
     }
-    
-    @Test public void testInvalidOAuth() {
+
+    @Test
+    public void testInvalidOAuth() {
         try {
 
-            String[] usernames = new String[] {
-                null,
-                TestHelper.getUser().getUsername(),
-                null,
-                TestHelper.getUser().getUsername(),
-                "wrong",
-                "wrong",
-            };
+            String[] usernames = new String[] { null, TestHelper.getUser().getUsername(), null,
+                    TestHelper.getUser().getUsername(), "wrong", "wrong", };
 
-            String[] passwords = new String[] {
-                null,
-                null,
-                TestHelper.commonPassword,
-                "wrong",
-                TestHelper.commonPassword,
-                "wrong"
-            };
+            String[] passwords = new String[] { null, null, TestHelper.commonPassword, "wrong",
+                    TestHelper.commonPassword, "wrong" };
 
-            int[] results = new int[] {
-                400,
-                400,
-                400,
-                401,
-                401,
-                401                
-            };
+            int[] results = new int[] { 400, 400, 400, 401, 401, 401 };
 
             for (int i = 0; i < results.length; ++i) {
                 Throwable e = null;
@@ -107,7 +95,8 @@ public class ClienteleAPITest {
                     e = ex;
                 }
 
-                assertTrue("type is " + e.getClass().toString() + " - " + e.getMessage(), e instanceof APIError || e instanceof IllegalArgumentException);
+                assertTrue("type is " + e.getClass().toString() + " - " + e.getMessage(),
+                        e instanceof APIError || e instanceof IllegalArgumentException);
                 if (e instanceof APIError) {
                     assertEquals(results[i], ((APIError) e).getCode());
                 }
@@ -118,29 +107,24 @@ public class ClienteleAPITest {
         }
     }
 
-    @Test public void testSigning() {
+    @Test
+    public void testSigning() {
         try {
             User user = TestHelper.getUser();
             ClienteleAPI clienteleAPI = TestHelper.getClienteleAPI();
 
-            Wallet createdWallet = clienteleAPI.wallets().create(TestHelper.commonPassword, "deaaa6bf-d944-57fa-8ec4-2dd45d1f5d3f", null, null, null, null);
-            
+            Wallet createdWallet = clienteleAPI.wallets().create(TestHelper.commonPassword,
+                    "deaaa6bf-d944-57fa-8ec4-2dd45d1f5d3f", null, null, null, null);
+
             Wallet[] wallets = clienteleAPI.wallets().list().toArray();
 
             for (Wallet wallet : wallets) {
-                String[] protocolNames = new String[]{
-                    "ethereum",
-                    "ethereum_ropsten",
-                    "ethereum_kovan"
-                };
+                String[] protocolNames = new String[] { "ethereum", "ethereum_ropsten", "ethereum_kovan" };
 
-                String[] asd = new String[]{
-                    "erc20",
-                    "erc20_ropsten",
-                    "erc20_kovan"
-                };
+                String[] asd = new String[] { "erc20", "erc20_ropsten", "erc20_kovan" };
 
-                Signature signature = clienteleAPI.wallets().sign(wallet, TestHelper.commonPassword, TestHelper.getRandomHexString(32 * 2), "hex", "hex");
+                Signature signature = clienteleAPI.wallets().sign(wallet, TestHelper.commonPassword,
+                        TestHelper.getRandomHexString(32 * 2), "hex", "hex");
 
                 assertEquals(signature.getBigNumberFormat(), "hex");
                 assertEquals(signature.getAlgorithm(), "ECDSA");
@@ -152,74 +136,40 @@ public class ClienteleAPITest {
         }
     }
 
-    @Test public void testTransactionCreate() {
+    @Test
+    public void testTransactionCreate() {
         try {
-            User user = TestHelper.getUser();
-            ClienteleAPI clienteleAPI = TestHelper.getClienteleAPI();
+            User user = TestHelper.getUserWithMoney();
+            ClienteleAPI clienteleAPI = TestHelper.getClienteleAPIWithMoney();
 
             JSONObject ethConfig = TestHelper.config.getJSONObject("faucet").getJSONObject("ethereum");
-            String[] assetIds = new String[]{
-                ethConfig.getJSONObject("eth").getString("assetId"),
-                ethConfig.getJSONObject("erc20").getString("assetId")
-            };
+            String[] assetIds = new String[] { ethConfig.getJSONObject("eth").getString("assetId"),
+                    ethConfig.getJSONObject("erc20").getString("assetId") };
 
-            clienteleAPI.wallets().create(TestHelper.commonPassword, assetIds[0], null, null, null, null);
-            clienteleAPI.wallets().create(TestHelper.commonPassword, assetIds[1], null, null, null, null);
+            clienteleAPI.wallets().create(TestHelper.config.getJSONObject("user").getString("password"), assetIds[0],
+                    null, null, null, null);
+            clienteleAPI.wallets().create(TestHelper.config.getJSONObject("user").getString("password"), assetIds[1],
+                    null, null, null, null);
 
             // Only test Tx creation for ETH and ERC20.
-            String[] protocolNamesToTestTxWith = new String[]{
-                "ethereum", "erc20",
-                "ethereum_ropsten", "erc20_ropsten",
-                "ethereum_kovan", "erc20_kovan",
-            };
-            
+            String[] protocolNamesToTestTxWith = new String[] { "ethereum", "erc20", "ethereum_ropsten",
+                    "erc20_ropsten", "ethereum_kovan", "erc20_kovan", };
+
             int counter = 0;
             Wallet[] wallets = clienteleAPI.wallets().list().toArray();
-            for(Wallet wallet : wallets){
-                
-                if (!Arrays.asList(protocolNamesToTestTxWith).contains(wallet.getProtocol())){
+            for (Wallet wallet : wallets) {
+
+                if (!Arrays.asList(protocolNamesToTestTxWith).contains(wallet.getProtocol())) {
                     continue;
                 }
-                
-                for(Balance balance : wallet.getBalances()){
-                    assertEquals("0", balance.getAmount());
-                }
-
-                // Create ERC20 transaction
-                Transaction transaction = wallet.transactions().create(
-                    TestHelper.commonPassword,
-                    ethConfig.getJSONObject("erc20").getString("assetId"),
-                    String.valueOf(ethConfig.getJSONObject("erc20").getInt("amount")),
-                    String.valueOf(
-                        ethConfig.getBigDecimal("gasPrice")
-                            .multiply(
-                                new BigDecimal("21000").add(ethConfig.getJSONObject("erc20").getBigDecimal("gasLimit"))
-                            )
-                    ),
-                    ethConfig.getJSONObject("holder").getString("address")
-                );
-
-                assertNotEquals(null, transaction.getAssetName());
-                assertNotEquals(null, transaction.getAssetId());
-                assertNotEquals(null, transaction.getFee());
-                assertNotEquals(null, transaction.getId());
-                assertNotEquals(null, transaction.getQuantity());
-                assertEquals(ethConfig.getJSONObject("holder").getString("address"), transaction.getRecipient());
-                assertNotEquals(null, transaction.getSender());
-                assertEquals("PENDING", transaction.getStatus());
-                assertNotEquals(null, transaction.getTxhash());
-                assertNotEquals(null, transaction.getWalletId());
 
                 // Create ETH transaction
-                transaction = wallet.transactions().create(
-                    TestHelper.commonPassword,
-                    ethConfig.getJSONObject("eth").getString("assetId"),
-                    String.valueOf(ethConfig.getJSONObject("eth").getBigDecimal("amount")),
-                    String.valueOf(
-                        ethConfig.getBigDecimal("gasPrice").multiply(new BigDecimal("21000"))
-                    ),
-                    ethConfig.getJSONObject("holder").getString("address")
-                );
+                Transaction transaction = wallet.transactions().create(
+                        TestHelper.config.getJSONObject("user").getString("password"),
+                        ethConfig.getJSONObject("eth").getString("assetId"),
+                        String.valueOf(ethConfig.getJSONObject("eth").getBigDecimal("amount")),
+                        String.valueOf(ethConfig.getBigDecimal("gasPrice").multiply(new BigDecimal("21000"))),
+                        ethConfig.getJSONObject("holder").getString("address"));
 
                 assertNotEquals(null, transaction.getAssetName());
                 assertNotEquals(null, transaction.getFee());
@@ -243,13 +193,14 @@ public class ClienteleAPITest {
             fail(e.getMessage());
         }
     }
-    
-    @Test public void testWalletListAndGet() throws IOException {
+
+    @Test
+    public void testWalletListAndGet() throws IOException {
         ClienteleAPI clienteleAPI = TestHelper.getClienteleAPI();
         JSONObject assets = TestHelper.config.getJSONObject("assetIds");
         Object[] arr = assets.toMap().values().toArray();
-        
-        for (int i = 0; i < arr.length; ++i){
+
+        for (int i = 0; i < arr.length; ++i) {
             clienteleAPI.wallets().create(TestHelper.commonPassword, (String) arr[i], null, null, null, null);
         }
 
@@ -286,12 +237,12 @@ public class ClienteleAPITest {
         }
     }
 
-
-    public <Type extends Listable> void testCursorWithPageSize(Listable.Endpoint<Type> endpoint, int pageSize) throws IOException {
+    public <Type extends Listable> void testCursorWithPageSize(Listable.Endpoint<Type> endpoint, int pageSize)
+            throws IOException {
         endpoint.list();
 
         Cursor<Type> cursor = endpoint.list(pageSize);
-        
+
         int counter = 0;
         for (Type t : cursor) {
             counter++;

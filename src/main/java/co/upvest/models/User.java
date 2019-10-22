@@ -1,10 +1,10 @@
-package co.upvest;
+package co.upvest.models;
 
 import com.squareup.moshi.Json;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-class User implements Listable {
+public class User implements Listable {
     
     private @NotNull String username;
     private @Nullable String recoverykit;

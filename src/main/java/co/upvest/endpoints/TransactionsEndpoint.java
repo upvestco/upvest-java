@@ -1,11 +1,14 @@
-package co.upvest;
+package co.upvest.endpoints;
+
+import co.upvest.*;
+import co.upvest.models.*;
 
 import java.io.IOException;
 import okhttp3.*;
 import com.squareup.moshi.*;
 import java.util.*;
 
-class TransactionsEndpoint implements Transaction.Endpoint<Transaction> {
+public class TransactionsEndpoint implements Transaction.Endpoint<Transaction> {
 
     private APIClient apiClient;
     private Wallet wallet;
@@ -19,7 +22,7 @@ class TransactionsEndpoint implements Transaction.Endpoint<Transaction> {
     final JsonAdapter<Transaction> transactionAdapter = moshi.adapter(Transaction.class);
     final JsonAdapter<Cursor<Transaction>> transactionCursorAdapter = moshi.adapter(Types.newParameterizedType(Cursor.class, Transaction.class));
 
-    TransactionsEndpoint(APIClient apiClient, Wallet wallet) {
+    public TransactionsEndpoint(APIClient apiClient, Wallet wallet) {
         this.apiClient = apiClient;
         this.wallet = wallet;
     }
@@ -45,7 +48,7 @@ class TransactionsEndpoint implements Transaction.Endpoint<Transaction> {
                 .post(RequestBody.create(JSON, objectAdapter.toJson(params)))
                 .build();
 
-        Response response = apiClient.client.newCall(request).execute();
+        Response response = apiClient.getClient().newCall(request).execute();
         Transaction transaction = transactionAdapter.fromJson(response.body().source());
         
         return transaction;
@@ -72,7 +75,7 @@ class TransactionsEndpoint implements Transaction.Endpoint<Transaction> {
                 .url(url)
                 .build();
 
-        Response response = apiClient.client.newCall(request).execute();
+        Response response = apiClient.getClient().newCall(request).execute();
         Cursor<Transaction> transactions = transactionCursorAdapter.fromJson(response.body().source());
         transactions.setEndpoint(this);
         return transactions;
@@ -101,7 +104,7 @@ class TransactionsEndpoint implements Transaction.Endpoint<Transaction> {
                 .url(url)
                 .build();
 
-        Response response = apiClient.client.newCall(request).execute();
+        Response response = apiClient.getClient().newCall(request).execute();
         Cursor<Transaction> transactions = transactionCursorAdapter.fromJson(response.body().source());
         transactions.setEndpoint(this);
         
@@ -121,10 +124,14 @@ class TransactionsEndpoint implements Transaction.Endpoint<Transaction> {
                 .url(url)
                 .build();
 
-        Response response = apiClient.client.newCall(request).execute();
+        Response response = apiClient.getClient().newCall(request).execute();
         Transaction transaction = transactionAdapter.fromJson(response.body().source());
         
         return transaction;
+    }
+
+    APIClient getApiClient() {
+        return this.apiClient;
     }
 
 }

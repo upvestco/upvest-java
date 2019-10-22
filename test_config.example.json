@@ -7,6 +7,11 @@
     "API_SECRET": "IbbcQlQHlIMWykby0OH6_p4zkELyzwwaNnb-cvVrlo0",
     "API_PASSPHRASE": "hQFLih2bWM2Ub-4hesubNpV2fYCYfpz1m18YkgE5WnV",
 
+    "user": {
+        "username": "user1",
+        "password": "password1",
+    },
+
     "strs": [
         "Hello",
         "Hello, world!",

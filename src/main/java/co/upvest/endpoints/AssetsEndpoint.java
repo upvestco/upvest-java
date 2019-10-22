@@ -1,4 +1,7 @@
-package co.upvest;
+package co.upvest.endpoints;
+
+import co.upvest.*;
+import co.upvest.models.*;
 
 import java.io.IOException;
 import com.squareup.moshi.*;
@@ -8,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import okhttp3.*;
 import org.jetbrains.annotations.Nullable;
 
-class AssetsEndpoint implements Asset.Endpoint<Asset> {
+public class AssetsEndpoint implements Asset.Endpoint<Asset> {
 
     private APIClient apiClient;
 
@@ -17,7 +20,7 @@ class AssetsEndpoint implements Asset.Endpoint<Asset> {
     final JsonAdapter<Asset> assetAdapter = moshi.adapter(Asset.class);
     final JsonAdapter<Cursor<Asset>> assetsCursorAdapter = moshi.adapter(Types.newParameterizedType(Cursor.class, Asset.class));
 
-    AssetsEndpoint(@NotNull APIClient apiClient) {
+    public AssetsEndpoint(@NotNull APIClient apiClient) {
         this.apiClient = apiClient;
     }
 
@@ -39,7 +42,7 @@ class AssetsEndpoint implements Asset.Endpoint<Asset> {
             .url(url)
             .build();
 
-        Response response = apiClient.client.newCall(request).execute();
+        Response response = apiClient.getClient().newCall(request).execute();
         Cursor<Asset> assets = assetsCursorAdapter.fromJson(response.body().source());
         assets.setEndpoint(this);
         return assets;
@@ -65,7 +68,7 @@ class AssetsEndpoint implements Asset.Endpoint<Asset> {
             .url(url)
             .build();
 
-        Response response = apiClient.client.newCall(request).execute();
+        Response response = apiClient.getClient().newCall(request).execute();
         Cursor<Asset> assets = assetsCursorAdapter.fromJson(response.body().source());
         assets.setEndpoint(this);
         return assets;
@@ -81,8 +84,12 @@ class AssetsEndpoint implements Asset.Endpoint<Asset> {
                 .url(url)
                 .build();
 
-        Response response = apiClient.client.newCall(request).execute();
+        Response response = apiClient.getClient().newCall(request).execute();
         Asset asset = assetAdapter.fromJson(response.body().source());
         return asset;
+    }
+
+    APIClient getApiClient() {
+        return this.apiClient;
     }
 }

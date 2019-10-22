@@ -1,10 +1,10 @@
-package co.upvest;
+package co.upvest.models;
 
 import java.io.IOException;
 
 import org.jetbrains.annotations.NotNull;
 
-interface Listable {
+public interface Listable {
 
     interface Endpoint<@NotNull Type extends Listable> {
 

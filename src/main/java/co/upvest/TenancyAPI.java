@@ -1,5 +1,8 @@
 package co.upvest;
 
+import co.upvest.endpoints.*;
+import co.upvest.models.*;
+
 import java.io.IOException;
 import okhttp3.*;
 import com.squareup.moshi.*;
@@ -7,18 +10,18 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 import org.jetbrains.annotations.*;
 
-class TenancyAPI extends APIClient {
+public class TenancyAPI extends APIClient {
 
-    protected Moshi moshi = new Moshi.Builder().build();
-    protected JsonAdapter<Echo> echoJsonAdapter = moshi.adapter(Echo.class);
-    protected JsonAdapter<Object> objectAdapter = moshi.adapter(Object.class);
+    public Moshi moshi = new Moshi.Builder().build();
+    public JsonAdapter<Echo> echoJsonAdapter = moshi.adapter(Echo.class);
+    public JsonAdapter<Object> objectAdapter = moshi.adapter(Object.class);
 
     private UsersEndpoint usersEndpoint;
     private AssetsEndpoint assetsEndpoint;
     private WalletsEndpoint walletsEndpoint;
 
     public @NotNull TenancyAPI(@NotNull String key, @NotNull String secret, @NotNull String passphrase) {
-        this(PLAYGROUND_HOST, key, secret, passphrase);
+        this(getDefaultHost(), key, secret, passphrase);
     }
 
     public @NotNull TenancyAPI(@NotNull String host, @NotNull String key, @NotNull String secret, @NotNull String passphrase) {

@@ -1,4 +1,7 @@
-package co.upvest;
+package co.upvest.endpoints;
+
+import co.upvest.*;
+import co.upvest.models.*;
 
 import java.io.IOException;
 import okhttp3.*;
@@ -6,7 +9,7 @@ import com.squareup.moshi.*;
 import java.util.*;
 import org.jetbrains.annotations.*;
 
-class UsersEndpoint implements User.Endpoint<User> {
+public class UsersEndpoint implements User.Endpoint<User> {
 
     private TenancyAPI apiClient;
 
@@ -16,7 +19,7 @@ class UsersEndpoint implements User.Endpoint<User> {
     final JsonAdapter<User> userJsonAdapter = moshi.adapter(User.class);
     final JsonAdapter<Cursor<User>> userCursorAdapter = moshi.adapter(Types.newParameterizedType(Cursor.class, User.class));
 
-    UsersEndpoint(@NotNull TenancyAPI tenancy) {
+    public UsersEndpoint(@NotNull TenancyAPI tenancy) {
         this.apiClient = tenancy;
     }
 
@@ -39,7 +42,7 @@ class UsersEndpoint implements User.Endpoint<User> {
             .url(url)
             .build();
 
-        Response response = apiClient.client.newCall(request).execute();
+        Response response = apiClient.getClient().newCall(request).execute();
         Cursor<User> users = userCursorAdapter.fromJson(response.body().source());
         users.setEndpoint(this);
         return users;
@@ -66,7 +69,7 @@ class UsersEndpoint implements User.Endpoint<User> {
                 .url(url)
                 .build();
 
-        Response response = apiClient.client.newCall(request).execute();
+        Response response = apiClient.getClient().newCall(request).execute();
         Cursor<User> users = userCursorAdapter.fromJson(response.body().source());
         users.setEndpoint(this);
         return users;
@@ -89,7 +92,7 @@ class UsersEndpoint implements User.Endpoint<User> {
             .post(RequestBody.create(JSON, apiClient.objectAdapter.toJson(params)))
             .build();
 
-        Response response = apiClient.client.newCall(request).execute();
+        Response response = apiClient.getClient().newCall(request).execute();
         User user = userJsonAdapter.fromJson(response.body().source());
         
         return user;
@@ -106,7 +109,7 @@ class UsersEndpoint implements User.Endpoint<User> {
             .url(url)
             .build();
 
-        Response response = apiClient.client.newCall(request).execute();
+        Response response = apiClient.getClient().newCall(request).execute();
         User user = userJsonAdapter.fromJson(response.body().source());
         
         return user;
@@ -128,7 +131,7 @@ class UsersEndpoint implements User.Endpoint<User> {
             .patch(RequestBody.create(JSON, apiClient.objectAdapter.toJson(params)))
             .build();
 
-        Response response = apiClient.client.newCall(request).execute();
+        Response response = apiClient.getClient().newCall(request).execute();
         User user = userJsonAdapter.fromJson(response.body().source());
         
         return user;
@@ -146,9 +149,12 @@ class UsersEndpoint implements User.Endpoint<User> {
             .delete()
             .build();
         
-        Response response = apiClient.client.newCall(request).execute();
+        Response response = apiClient.getClient().newCall(request).execute();
         return response.code() == 204;
     }
 
+    APIClient getApiClient() {
+        return this.apiClient;
+    }
 
 }

@@ -1,10 +1,10 @@
-package co.upvest;
+package co.upvest.models;
 
 import com.squareup.moshi.Json;
 
 import org.jetbrains.annotations.NotNull;
 
-class Signature {
+public class Signature {
 
     private @Json(name = "big_number_format")  @NotNull String bigNumberFormat;
     private @NotNull String algorithm;
@@ -70,11 +70,11 @@ class Signature {
             this.y = y;
         }
 
-        @NotNull String getX() {
+        public @NotNull String getX() {
             return x;
         }
 
-        @NotNull String getY() {
+        public @NotNull String getY() {
             return y;
         }
     }

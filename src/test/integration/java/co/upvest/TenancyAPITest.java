@@ -1,5 +1,7 @@
 package co.upvest;
 
+import co.upvest.models.*;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -11,7 +13,15 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.Test;
 
+
 public class TenancyAPITest {
+
+    @Test public void testDefaultHost() {
+        String testhost = "testhost";
+        APIClient.setDefaultHost(testhost);
+        assertEquals(APIClient.getDefaultHost(), testhost);
+        APIClient.setDefaultHost(APIClient.PLAYGROUND_HOST);
+    }
 
     @Test public void testEcho() {
         TenancyAPI tenancyAPI = TestHelper.getTenancyAPI();

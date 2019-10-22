@@ -1,4 +1,4 @@
-package co.upvest;
+package co.upvest.models;
 
 import java.io.IOException;
 import java.util.Iterator;
@@ -9,7 +9,7 @@ import com.squareup.moshi.Json;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-class Cursor<Type extends Listable> implements Iterable<Type> {
+public class Cursor<Type extends Listable> implements Iterable<Type> {
 
     @Json(name = "results") private @NotNull Type[] arr;
     private String previous;
@@ -43,7 +43,7 @@ class Cursor<Type extends Listable> implements Iterable<Type> {
         return this.endpoint.list(this.previous);
     }
 
-    void setEndpoint(@NotNull Listable.Endpoint<Type> endpoint) {
+    public void setEndpoint(@NotNull Listable.Endpoint<Type> endpoint) {
         this.endpoint = endpoint;
     }
 

@@ -1,5 +1,8 @@
 package co.upvest;
 
+import co.upvest.endpoints.*;
+import co.upvest.models.*;
+
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -9,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 
 import okhttp3.*;
 
-class ClienteleAPI extends APIClient{
+public class ClienteleAPI extends APIClient{
 
     final private Moshi moshi = new Moshi.Builder().build();
     final private JsonAdapter<Echo> echoJsonAdapter = moshi.adapter(Echo.class);
@@ -22,7 +25,7 @@ class ClienteleAPI extends APIClient{
     private WalletsEndpoint walletsEndpoint;
 
     public ClienteleAPI(@NotNull String oAuthClientId, @NotNull String oAuthClientSecret, @NotNull String username, @NotNull String password) throws IOException {
-        this(PLAYGROUND_HOST, oAuthClientId, oAuthClientSecret, username, password);
+        this(getDefaultHost(), oAuthClientId, oAuthClientSecret, username, password);
     }
 
     public ClienteleAPI(@NotNull String host, @NotNull String oAuthClientId, @NotNull String oAuthClientSecret, @NotNull String username, @NotNull String password) throws IOException {

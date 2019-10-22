@@ -4,7 +4,7 @@ import java.io.IOException;
 import com.squareup.moshi.Json;
 import okhttp3.*;
 
-class OAuth extends Auth {
+public class OAuth extends Auth {
     
     @Json(name = "access_token") private String accessToken;
     @Json(name = "expires_in") private int expiresIn;
@@ -38,4 +38,23 @@ class OAuth extends Auth {
         return chain.proceed(request);
     }
 
+    public String getAccessToken() {
+        return accessToken;
+    }
+
+    public int getExpiresIn() {
+        return expiresIn;
+    }
+
+    public String getTokenType() {
+        return tokenType;
+    }
+
+    public String getScope() {
+        return scope;
+    }
+
+    public String getRefreshToken() {
+        return refreshToken;
+    }
 }

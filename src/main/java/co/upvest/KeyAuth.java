@@ -8,7 +8,7 @@ import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import okhttp3.*;
 
-class KeyAuth extends Auth {
+public class KeyAuth extends Auth {
 
     private String key;
     private String secret;

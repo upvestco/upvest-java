@@ -12,24 +12,24 @@ public class HDTransaction {
     private @NotNull int blockNumber;
     private @NotNull String from;
     private @NotNull String to;
-    private @NotNull String gas;
+    private @NotNull int gasLimit;
     private @NotNull String hash;
     private @NotNull String nonce;
-    private @NotNull String transactionIndex;
+    private @NotNull int transactionIndex;
     private @NotNull String value;
-    private @NotNull String gasPrice;
+    private @NotNull int gasPrice;
     private @NotNull String input;
-    private @NotNull String confirmations;
-    private @Nullable Map<String, Object> error;
+    private @NotNull int confirmations;
+    private @Nullable Object error;
 
-    public HDTransaction(@NotNull String blockHash, @NotNull int blockNumber, @NotNull String from, @NotNull String to,
-                         @NotNull String gas, @NotNull String hash, @NotNull String nonce, @NotNull String transactionIndex,
-                         @NotNull String value, @NotNull String gasPrice, @NotNull String input, @NotNull String confirmations) {
+    public HDTransaction(@NotNull String blockHash, @NotNull int blockNumber, @NotNull String from, @NotNull String to, Object error,
+                         @NotNull int gasLimit, @NotNull String hash, @NotNull String nonce, @NotNull int transactionIndex,
+                         @NotNull String value, @NotNull int gasPrice, @NotNull String input, @NotNull int confirmations) {
         this.blockHash = blockHash;
         this.blockNumber = blockNumber;
         this.from = from;
         this.to = to;
-        this.gas = gas;
+        this.gasLimit = gasLimit;
         this.hash = hash;
         this.nonce = nonce;
         this.transactionIndex = transactionIndex;
@@ -37,6 +37,7 @@ public class HDTransaction {
         this.gasPrice = gasPrice;
         this.input = input;
         this.confirmations = confirmations;
+        this.error = error;
     }
 
     public @NotNull String getBlockHash() {
@@ -55,8 +56,8 @@ public class HDTransaction {
         return to;
     }
 
-    public @NotNull String getGas() {
-        return gas;
+    public @NotNull int getGasLimit() {
+        return gasLimit;
     }
 
     public @NotNull String getHash() {
@@ -67,7 +68,7 @@ public class HDTransaction {
         return nonce;
     }
 
-    public @NotNull String getTransactionIndex() {
+    public @NotNull int getTransactionIndex() {
         return transactionIndex;
     }
 
@@ -75,7 +76,7 @@ public class HDTransaction {
         return value;
     }
 
-    public @NotNull String getGasPrice() {
+    public @NotNull int getGasPrice() {
         return gasPrice;
     }
 
@@ -83,11 +84,11 @@ public class HDTransaction {
         return input;
     }
 
-    public @NotNull String getConfirmations() {
+    public @NotNull int getConfirmations() {
         return confirmations;
     }
 
-    public @Nullable Map<String, Object> getError() {
+    public @Nullable Object getError() {
         return error;
     }
 }

@@ -5,25 +5,25 @@ import com.squareup.moshi.Json;
 import org.jetbrains.annotations.NotNull;
 
 public class HDStatus {
-    private @NotNull String lowest;
-    private @NotNull String highest;
-    private @NotNull String latest;
+    private @NotNull int lowest;
+    private @NotNull int highest;
+    private @NotNull int latest;
 
-    public HDStatus(@NotNull String lowest, @NotNull String highest, @NotNull String latest) {
+    public HDStatus(@NotNull int lowest, @NotNull int highest, @NotNull int latest) {
         this.lowest = lowest;
         this.highest = highest;
         this.latest = latest;
     }
 
-    public @NotNull String getLowest() {
+    public @NotNull int getLowest() {
         return lowest;
     }
 
-    public @NotNull String getHighest() {
+    public @NotNull int getHighest() {
         return highest;
     }
 
-    public @NotNull String getLatest() {
+    public @NotNull int getLatest() {
         return latest;
     }
 }

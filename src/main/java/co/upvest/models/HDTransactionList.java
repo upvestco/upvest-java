@@ -6,16 +6,16 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class HDTransactionList {
-    private @NotNull HDTransaction[] results;
+    private @NotNull HDTransaction[] result;
     private @Json(name = "next_cursor") @NotNull String nextCursor;
 
-    public HDTransactionList(@NotNull HDTransaction[] results, @NotNull String nextCursor) {
-        this.results = results;
+    public HDTransactionList(@NotNull HDTransaction[] result, @NotNull String nextCursor) {
+        this.result = result;
         this.nextCursor = nextCursor;
     }
 
     public @NotNull HDTransaction[] getResults() {
-        return results;
+        return result;
     }
 
     public @NotNull String getNextCursor() {

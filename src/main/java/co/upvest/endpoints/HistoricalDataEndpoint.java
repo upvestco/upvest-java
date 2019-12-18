@@ -12,6 +12,13 @@ import okhttp3.*;
 import java.io.IOException;
 
 public class  HistoricalDataEndpoint {
+    private class HDResponse {
+        private @NotNull String result;
+
+        public String getResult() {
+            return result;
+        }
+    }
 
     private APIClient apiClient;
 
@@ -21,6 +28,7 @@ public class  HistoricalDataEndpoint {
     final JsonAdapter<HDBlock> hdBlockAdapter = moshi.adapter(HDBlock.class);
     final JsonAdapter<HDTransactionList> hdTransactionListAdapter = moshi.adapter(HDTransactionList.class);
     final JsonAdapter<HDStatus> hdStatusAdapter = moshi.adapter(HDStatus.class);
+    final JsonAdapter<HDResponse> hdResponseAdapter = moshi.adapter(HDResponse.class);
 
     public HistoricalDataEndpoint(@NotNull APIClient apiClient) {
         this.apiClient = apiClient;
@@ -40,7 +48,8 @@ public class  HistoricalDataEndpoint {
                 .build();
 
         Response response = apiClient.getClient().newCall(request).execute();
-        HDBlock block = hdBlockAdapter.fromJson(response.body().source());
+        HDResponse hdResponse = hdResponseAdapter.fromJson(response.body().source());
+        HDBlock block = hdBlockAdapter.fromJson(hdResponse.getResult());
         return block;
     }
 
@@ -58,7 +67,8 @@ public class  HistoricalDataEndpoint {
                 .build();
 
         Response response = apiClient.getClient().newCall(request).execute();
-        HDTransaction transaction = hdTransactionAdapter.fromJson(response.body().source());
+        HDResponse hdResponse = hdResponseAdapter.fromJson(response.body().source());
+        HDTransaction transaction = hdTransactionAdapter.fromJson(hdResponse.getResult());
         return transaction;
     }
 
@@ -94,18 +104,20 @@ public class  HistoricalDataEndpoint {
                 .build();
 
         Response response = apiClient.getClient().newCall(request).execute();
-        HDBalance balance = hdBalanceAdapter.fromJson(response.body().source());
+        HDResponse hdResponse = hdResponseAdapter.fromJson(response.body().source());
+        HDBalance balance = hdBalanceAdapter.fromJson(hdResponse.getResult());
         return balance;
     }
 
-    public HDBalance getContractBalance(@NotNull String protocol, @NotNull String network, @NotNull String address, @NotNull String contractAddr) throws IOException {
+    public HDBalance getContractBalance(@NotNull String protocol, @NotNull String network, @NotNull String address,
+                                        @NotNull String contractAddress) throws IOException {
         HttpUrl url =  apiClient.getBaseUrl()
                 .addPathSegment("data")
                 .addPathSegment(protocol)
                 .addPathSegment(network)
                 .addPathSegment("balance")
                 .addPathSegment(address)
-                .addPathSegment(contractAddr)
+                .addPathSegment(contractAddress)
                 .build();
 
         Request request = new Request.Builder()
@@ -113,7 +125,8 @@ public class  HistoricalDataEndpoint {
                 .build();
 
         Response response = apiClient.getClient().newCall(request).execute();
-        HDBalance balance = hdBalanceAdapter.fromJson(response.body().source());
+        HDResponse hdResponse = hdResponseAdapter.fromJson(response.body().source());
+        HDBalance balance = hdBalanceAdapter.fromJson(hdResponse.getResult());
         return balance;
     }
 
@@ -130,7 +143,8 @@ public class  HistoricalDataEndpoint {
                 .build();
 
         Response response = apiClient.getClient().newCall(request).execute();
-        HDStatus status = hdStatusAdapter.fromJson(response.body().source());
+        HDResponse hdResponse = hdResponseAdapter.fromJson(response.body().source());
+        HDStatus status = hdStatusAdapter.fromJson(hdResponse.getResult());
         return status;
     }
 

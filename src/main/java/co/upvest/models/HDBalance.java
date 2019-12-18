@@ -61,7 +61,7 @@ public class HDBalance {
         return timestamp;
     }
 
-    public @NotNull boolean isMainChain() {
+    public @NotNull boolean getIsMainChain() {
         return isMainChain;
     }
 }

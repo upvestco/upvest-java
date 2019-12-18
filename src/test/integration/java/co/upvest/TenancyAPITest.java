@@ -16,6 +16,9 @@ import org.junit.Test;
 
 public class TenancyAPITest {
 
+    private String ethProtocol = "ethereum";
+    private String ethNetwork = "ropsten";
+
     @Test public void testDefaultHost() {
         String testhost = "testhost";
         APIClient.setDefaultHost(testhost);
@@ -53,11 +56,11 @@ public class TenancyAPITest {
 
     @Test public void testUserCreate() {
         TenancyAPI tenancyAPI = TestHelper.getTenancyAPI();
-        
+
         String username = "user_" + String.valueOf(java.time.Instant.now().getEpochSecond());
         try {
             User user = tenancyAPI.users().create(username, "password", new String[]{});
-            
+
             assertEquals(username, user.getUsername());
             assertTrue("recovery kit", TestHelper.isValidRecoveryKit(user.getRecoverykit()));
 
@@ -68,7 +71,7 @@ public class TenancyAPITest {
 
     @Test public void testUserUpdatePassword() {
         TenancyAPI tenancyAPI = TestHelper.getTenancyAPI();
-        
+
         String username = "user_" + String.valueOf(java.time.Instant.now().getEpochSecond());
         String pass1 = "password";
         String pass2 = "n3w-password";
@@ -86,11 +89,11 @@ public class TenancyAPITest {
 
     @Test public void testUserDelete() {
         TenancyAPI tenancyAPI = TestHelper.getTenancyAPI();
-        
+
         String username = "user_" + String.valueOf(java.time.Instant.now().getEpochSecond());
         try {
             User user = tenancyAPI.users().create(username, "password", new String[]{});
-            
+
             assertTrue(tenancyAPI.users().delete(user.getUsername()));
         } catch (IOException e) {
             fail(e.getMessage());
@@ -99,10 +102,10 @@ public class TenancyAPITest {
 
     @Test public void testUsersListAndGet() {
         TenancyAPI tenancyAPI = TestHelper.getTenancyAPI();
-        
+
         try {
             User[] users = tenancyAPI.users().list().toArray();
-            
+
             for (User user : users) {
                 User otherUser = tenancyAPI.users().get(user.getUsername());
 
@@ -115,10 +118,10 @@ public class TenancyAPITest {
 
     @Test public void testUsersCursor() {
         TenancyAPI tenancyAPI = TestHelper.getTenancyAPI();
-        
+
         try {
             Cursor<User> users = tenancyAPI.users().list();
-            
+
             int counter = 0;
             for (User user : users) {
                 counter++;
@@ -141,12 +144,12 @@ public class TenancyAPITest {
 
     public <Type extends Listable> void testCursorWithPageSize(Listable.Endpoint<Type> endpoint, int pageSize) {
         TenancyAPI tenancyAPI = TestHelper.getTenancyAPI();
-        
+
         try {
             endpoint.list();
 
             Cursor<Type> cursor = endpoint.list(pageSize);
-            
+
             int counter = 0;
             for (Type t : cursor) {
                 counter++;
@@ -167,10 +170,10 @@ public class TenancyAPITest {
 
     @Test public void testAssetsListAndGet() {
         TenancyAPI tenancyAPI = TestHelper.getTenancyAPI();
-        
+
         try {
             Asset[] assets = tenancyAPI.assets().list().toArray();
-            
+
             for (Asset asset : assets) {
                 System.out.println("\"" + asset.getName() + "\": \"" + asset.getId() + "\",");
                 Asset otherAsset = tenancyAPI.assets().get(asset.getId());
@@ -189,20 +192,20 @@ public class TenancyAPITest {
 
     @Test public void testUserCreateWithWallet() {
         TenancyAPI tenancyAPI = TestHelper.getTenancyAPI();
-        
+
         try {
             String username = "user_" + String.valueOf(java.time.Instant.now().getEpochSecond());
 
             JSONObject assets = TestHelper.config.getJSONObject("assetIds");
             Object[] arr = assets.toMap().values().toArray();
             String[] assetIds = new String[arr.length];
-            
+
             for (int i = 0; i < arr.length; ++i){
                 assetIds[i] = (String) arr[i];
             }
 
             User user = tenancyAPI.users().create(username, "password", assetIds);
-            
+
             assertEquals("ETH and ERC20 get combined in 1 wallet.", assetIds.length - 1, user.getWalletIds().length);
             assertTrue(TestHelper.isValidRecoveryKit(user.getRecoverykit()));
 
@@ -213,22 +216,96 @@ public class TenancyAPITest {
 
     @Test public void testWalletListAndGet(){
         TenancyAPI tenancyAPI = TestHelper.getTenancyAPI();
-        
+
         try {
             String username = "user_" + String.valueOf(java.time.Instant.now().getEpochSecond());
 
             JSONObject assets = TestHelper.config.getJSONObject("assetIds");
             Object[] arr = assets.toMap().values().toArray();
             String[] assetIds = new String[arr.length];
-            
+
             for (int i = 0; i < arr.length; ++i){
                 assetIds[i] = (String) arr[i];
             }
 
             User user = tenancyAPI.users().create(username, "password", assetIds);
-            
+
             assertEquals("ETH and ERC20 get combined in 1 wallet.", assetIds.length - 1, user.getWalletIds().length);
             assertTrue(TestHelper.isValidRecoveryKit(user.getRecoverykit()));
+
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test public void testHistoricalTransactionByTxHash(){
+        TenancyAPI tenancyAPI = TestHelper.getTenancyAPI();
+
+        try {
+            String txHash = "0xa313aaad0b9b1fd356f7f42ccff1fa385a2f7c2585e0cf1e0fb6814d8bdb559a"
+
+            HDTransaction tx = tenancyAPI.historical().getTxByHash(ethProtocol, ethNetwork, txHash);
+            assertEquals("transaction hashes match", tx.getHash(), txHash.substring(2));
+
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test public void testHistoricalBlock(){
+        TenancyAPI tenancyAPI = TestHelper.getTenancyAPI();
+
+        try {
+            String blockNumber = "6570890";
+
+            HDBlock block = tenancyAPI.historical().getBlock(ethProtocol, ethNetwork, blockNumber);
+            assertEquals("block numbers match", block.getNumber(), blockNumber);
+
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test public void testHistoricalAssetBalance(){
+        TenancyAPI tenancyAPI = TestHelper.getTenancyAPI();
+
+        try {
+            String addr = "0x93b3d0b2894e99c2934bed8586ea4e2b94ce6bfd"
+
+            HDBalance balance = tenancyAPI.historical().getAssetBalance(ethProtocol, ethNetwork, addr);
+            assertTrue(balance.getAddress());
+            assertEquals("addresses match", balance.getAddress(), addr);
+
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test public void testHistoricalContractBalance(){
+        TenancyAPI tenancyAPI = TestHelper.getTenancyAPI();
+
+        try {
+            String addr = "0x93b3d0b2894e99c2934bed8586ea4e2b94ce6bfd";
+            String contractAddr = "0x1d7cf6ad190772cc6177beea2e3ae24cc89b2a10";
+
+            HDBalance balance = tenancyAPI.historical().getContractBalance(ethProtocol, ethNetwork, addr, contractAddr);
+            assertTrue(balance.getAddress());
+            assertEquals("addresses match", balance.getAddress(), addr);
+            assertEquals("contract addresses match", balance.getContract(), contractAddr);
+
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test public void testHistoricalStatus(){
+        TenancyAPI tenancyAPI = TestHelper.getTenancyAPI();
+
+        try {
+            HDStatus status = tenancyAPI.historical().getStatus(ethProtocol, ethNetwork);
+            assertTrue(status.getHighest());
+            assertTrue(status.getLowest());
+            assertTrue(status.getLatest());
 
         } catch (Exception e) {
             fail(e.getMessage());

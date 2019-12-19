@@ -7,7 +7,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class HDBlock {
 
-    private @NotNull int number;
+    private @NotNull String number;
     private @NotNull String hash;
     private @NotNull String parentHash;
     private @NotNull String nonce;
@@ -27,7 +27,7 @@ public class HDBlock {
     private @NotNull String timestamp;
     private @NotNull String[] uncles;
 
-    public HDBlock(@NotNull int number, @NotNull String hash, @NotNull String parentHash, @NotNull String nonce, @NotNull String sha3Uncles,
+    public HDBlock(@NotNull String number, @NotNull String hash, @NotNull String parentHash, @NotNull String nonce, @NotNull String sha3Uncles,
                    @NotNull String logsBloom, @NotNull String transactionsRoot, @NotNull String stateRoot, @NotNull String receiptsRoot,
                    @NotNull String miner, @NotNull String difficulty, @NotNull String totalDifficulty, @NotNull String extraData,
                    @NotNull String size, @NotNull String gasLimit, @NotNull String gasUsed, @NotNull String[] transactions,
@@ -53,7 +53,7 @@ public class HDBlock {
         this.uncles = uncles;
     }
 
-    public @NotNull int getNumber() {
+    public @NotNull String getNumber() {
         return number;
     }
 

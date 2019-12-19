@@ -5,6 +5,7 @@ import co.upvest.models.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
 import java.io.IOException;
@@ -242,7 +243,7 @@ public class TenancyAPITest {
         TenancyAPI tenancyAPI = TestHelper.getTenancyAPI();
 
         try {
-            String txHash = "0xa313aaad0b9b1fd356f7f42ccff1fa385a2f7c2585e0cf1e0fb6814d8bdb559a"
+            String txHash = "0xa313aaad0b9b1fd356f7f42ccff1fa385a2f7c2585e0cf1e0fb6814d8bdb559a";
 
             HDTransaction tx = tenancyAPI.historical().getTxByHash(ethProtocol, ethNetwork, txHash);
             assertEquals("transaction hashes match", tx.getHash(), txHash.substring(2));
@@ -270,10 +271,10 @@ public class TenancyAPITest {
         TenancyAPI tenancyAPI = TestHelper.getTenancyAPI();
 
         try {
-            String addr = "0x93b3d0b2894e99c2934bed8586ea4e2b94ce6bfd"
+            String addr = "0x93b3d0b2894e99c2934bed8586ea4e2b94ce6bfd";
 
             HDBalance balance = tenancyAPI.historical().getAssetBalance(ethProtocol, ethNetwork, addr);
-            assertTrue(balance.getAddress());
+            assertNotNull(balance.getAddress());
             assertEquals("addresses match", balance.getAddress(), addr);
 
         } catch (Exception e) {
@@ -289,7 +290,7 @@ public class TenancyAPITest {
             String contractAddr = "0x1d7cf6ad190772cc6177beea2e3ae24cc89b2a10";
 
             HDBalance balance = tenancyAPI.historical().getContractBalance(ethProtocol, ethNetwork, addr, contractAddr);
-            assertTrue(balance.getAddress());
+            assertNotNull(balance.getAddress());
             assertEquals("addresses match", balance.getAddress(), addr);
             assertEquals("contract addresses match", balance.getContract(), contractAddr);
 
@@ -303,9 +304,9 @@ public class TenancyAPITest {
 
         try {
             HDStatus status = tenancyAPI.historical().getStatus(ethProtocol, ethNetwork);
-            assertTrue(status.getHighest());
-            assertTrue(status.getLowest());
-            assertTrue(status.getLatest());
+            assertNotNull(status.getHighest());
+            assertNotNull(status.getLowest());
+            assertNotNull(status.getLatest());
 
         } catch (Exception e) {
             fail(e.getMessage());

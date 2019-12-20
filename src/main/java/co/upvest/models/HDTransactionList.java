@@ -5,16 +5,19 @@ import com.squareup.moshi.Json;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
+
 public class HDTransactionList {
-    private @NotNull HDTransaction[] result;
+    private @NotNull
+    List<HDTransaction> result;
     private @Json(name = "next_cursor") @NotNull String nextCursor;
 
-    public HDTransactionList(@NotNull HDTransaction[] result, @NotNull String nextCursor) {
+    public HDTransactionList(@NotNull List<HDTransaction> result, @NotNull String nextCursor) {
         this.result = result;
         this.nextCursor = nextCursor;
     }
 
-    public @NotNull HDTransaction[] getResults() {
+    public @NotNull List<HDTransaction> getResults() {
         return result;
     }
 

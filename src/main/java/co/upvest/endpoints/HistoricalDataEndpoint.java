@@ -4,6 +4,7 @@ import co.upvest.APIClient;
 import co.upvest.models.*;
 
 import java.lang.annotation.RetentionPolicy;
+import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 
 import com.squareup.moshi.*;
@@ -12,6 +13,8 @@ import org.jetbrains.annotations.NotNull;
 import okhttp3.*;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class HistoricalDataEndpoint {
 
@@ -62,26 +65,6 @@ public class HistoricalDataEndpoint {
         JsonAdapter<HDTransaction> adapter = moshi.adapter(HDTransaction.class, EnvelopeJsonAdapter.Enveloped.class);
         HDTransaction transaction = adapter.fromJson(response.body().source());
         return transaction;
-    }
-
-    public HDTransactionList listTransactions(@NotNull String protocol, @NotNull String network, @NotNull String address) throws IOException {
-        HttpUrl url = apiClient.getBaseUrl()
-                .addPathSegment("data")
-                .addPathSegment(protocol)
-                .addPathSegment(network)
-                .addPathSegment("transactions")
-                .addPathSegment(address)
-                .build();
-
-        Request request = new Request.Builder()
-                .url(url)
-                .build();
-
-        Response response = apiClient.getClient().newCall(request).execute();
-        Moshi moshi = new Moshi.Builder().build();
-        JsonAdapter<HDTransactionList> hdTransactionListAdapter = moshi.adapter(HDTransactionList.class);
-        HDTransactionList transactions = hdTransactionListAdapter.fromJson(response.body().source());
-        return transactions;
     }
 
     public HDBalance getAssetBalance(@NotNull String protocol, @NotNull String network, @NotNull String address) throws IOException {
@@ -142,4 +125,48 @@ public class HistoricalDataEndpoint {
         return status;
     }
 
+    public HDTransactionList listTransactions(@NotNull String protocol, @NotNull String network, @NotNull String address) throws IOException {
+        HttpUrl url = apiClient.getBaseUrl()
+                .addPathSegment("data")
+                .addPathSegment(protocol)
+                .addPathSegment(network)
+                .addPathSegment("transactions")
+                .addPathSegment(address)
+                .build();
+
+        return doListTransactions(url);
+    }
+
+    public HDTransactionList listTransactions(@NotNull String protocol, @NotNull String network,
+                                              @NotNull String address, HDFilters opts) throws IOException {
+        HttpUrl.Builder url = apiClient.getBaseUrl()
+                .addPathSegment("data")
+                .addPathSegment(protocol)
+                .addPathSegment(network)
+                .addPathSegment("transactions")
+                .addPathSegment(address);
+
+        for (Map.Entry<String, Object> entry : opts.toMap().entrySet()) {
+            Object val = entry.getValue();
+            if (val != null) {
+                url.addQueryParameter(entry.getKey(), String.valueOf(entry.getValue()));
+            }
+        }
+
+        return doListTransactions(url.build());
+    }
+
+    private HDTransactionList doListTransactions(HttpUrl url) throws IOException {
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+        System.out.println("URL: " + url);
+        Response response = apiClient.getClient().newCall(request).execute();
+        Moshi moshi = new Moshi.Builder().build();
+        JsonAdapter<HDTransactionList> hdTransactionListAdapter = moshi.adapter(HDTransactionList.class);
+        HDTransactionList transactions = hdTransactionListAdapter.fromJson(response.body().source());
+        return transactions;
+    }
 }
+

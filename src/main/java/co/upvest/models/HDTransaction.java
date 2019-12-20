@@ -1,6 +1,9 @@
 package co.upvest.models;
 
+import java.lang.reflect.Field;
+import java.util.HashMap;
 import java.util.Map;
+
 import com.squareup.moshi.Json;
 
 import org.jetbrains.annotations.NotNull;
@@ -8,19 +11,32 @@ import org.jetbrains.annotations.Nullable;
 
 public class HDTransaction {
 
-    private @NotNull String blockHash;
-    private @NotNull int blockNumber;
-    private @NotNull String from;
-    private @NotNull String to;
-    private @NotNull int gasLimit;
-    private @NotNull String hash;
-    private @NotNull String nonce;
-    private @NotNull int transactionIndex;
-    private @NotNull String value;
-    private @NotNull int gasPrice;
-    private @NotNull String input;
-    private @NotNull int confirmations;
-    private @Nullable Object error;
+    private @NotNull
+    String blockHash;
+    private @NotNull
+    int blockNumber;
+    private @NotNull
+    String from;
+    private @NotNull
+    String to;
+    private @NotNull
+    int gasLimit;
+    private @NotNull
+    String hash;
+    private @NotNull
+    String nonce;
+    private @NotNull
+    int transactionIndex;
+    private @NotNull
+    String value;
+    private @NotNull
+    int gasPrice;
+    private @NotNull
+    String input;
+    private @NotNull
+    int confirmations;
+    private @Nullable
+    Object error;
 
     public HDTransaction(@NotNull String blockHash, @NotNull int blockNumber, @NotNull String from, @NotNull String to, Object error,
                          @NotNull int gasLimit, @NotNull String hash, @NotNull String nonce, @NotNull int transactionIndex,
@@ -40,55 +56,70 @@ public class HDTransaction {
         this.error = error;
     }
 
-    public @NotNull String getBlockHash() {
+    public @NotNull
+    String getBlockHash() {
         return blockHash;
     }
 
-    public @NotNull int getBlockNumber() {
+    public @NotNull
+    int getBlockNumber() {
         return blockNumber;
     }
 
-    public @NotNull String getFrom() {
+    public @NotNull
+    String getFrom() {
         return from;
     }
 
-    public @NotNull String getTo() {
+    public @NotNull
+    String getTo() {
         return to;
     }
 
-    public @NotNull int getGasLimit() {
+    public @NotNull
+    int getGasLimit() {
         return gasLimit;
     }
 
-    public @NotNull String getHash() {
+    public @NotNull
+    String getHash() {
         return hash;
     }
 
-    public @NotNull String getNonce() {
+    public @NotNull
+    String getNonce() {
         return nonce;
     }
 
-    public @NotNull int getTransactionIndex() {
+    public @NotNull
+    int getTransactionIndex() {
         return transactionIndex;
     }
 
-    public @NotNull String getValue() {
+    public @NotNull
+    String getValue() {
         return value;
     }
 
-    public @NotNull int getGasPrice() {
+    public @NotNull
+    int getGasPrice() {
         return gasPrice;
     }
 
-    public @NotNull String getInput() {
+    public @NotNull
+    String getInput() {
         return input;
     }
 
-    public @NotNull int getConfirmations() {
+    public @NotNull
+    int getConfirmations() {
         return confirmations;
     }
 
-    public @Nullable Object getError() {
+    public @Nullable
+    Object getError() {
         return error;
     }
+
 }
+

@@ -9,6 +9,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
 import java.io.IOException;
+import java.util.stream.Collectors;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -20,19 +21,21 @@ public class TenancyAPITest {
     private String ethProtocol = "ethereum";
     private String ethNetwork = "ropsten";
 
-    @Test public void testDefaultHost() {
+    @Test
+    public void testDefaultHost() {
         String testhost = "testhost";
         APIClient.setDefaultHost(testhost);
         assertEquals(APIClient.getDefaultHost(), testhost);
         APIClient.setDefaultHost(APIClient.PLAYGROUND_HOST);
     }
 
-    @Test public void testEcho() {
+    @Test
+    public void testEcho() {
         TenancyAPI tenancyAPI = TestHelper.getTenancyAPI();
 
         try {
             JSONArray arr = TestHelper.config.getJSONArray("strs");
-            for (int i = 0; i < arr.length(); ++i){
+            for (int i = 0; i < arr.length(); ++i) {
                 String echo = tenancyAPI.echo(arr.getString(i)).getEcho();
                 assertEquals(arr.getString(i), echo);
             }
@@ -41,12 +44,13 @@ public class TenancyAPITest {
         }
     }
 
-    @Test public void testEchoGet() {
+    @Test
+    public void testEchoGet() {
         TenancyAPI tenancyAPI = TestHelper.getTenancyAPI();
 
         try {
             JSONArray arr = TestHelper.config.getJSONArray("strs");
-            for (int i = 0; i < arr.length(); ++i){
+            for (int i = 0; i < arr.length(); ++i) {
                 String echo = tenancyAPI.echoGet(arr.getString(i)).getEcho();
                 assertEquals(arr.getString(i), echo);
             }
@@ -55,7 +59,8 @@ public class TenancyAPITest {
         }
     }
 
-    @Test public void testUserCreate() {
+    @Test
+    public void testUserCreate() {
         TenancyAPI tenancyAPI = TestHelper.getTenancyAPI();
 
         String username = "user_" + String.valueOf(java.time.Instant.now().getEpochSecond());
@@ -70,7 +75,8 @@ public class TenancyAPITest {
         }
     }
 
-    @Test public void testUserUpdatePassword() {
+    @Test
+    public void testUserUpdatePassword() {
         TenancyAPI tenancyAPI = TestHelper.getTenancyAPI();
 
         String username = "user_" + String.valueOf(java.time.Instant.now().getEpochSecond());
@@ -88,7 +94,8 @@ public class TenancyAPITest {
         }
     }
 
-    @Test public void testUserDelete() {
+    @Test
+    public void testUserDelete() {
         TenancyAPI tenancyAPI = TestHelper.getTenancyAPI();
 
         String username = "user_" + String.valueOf(java.time.Instant.now().getEpochSecond());
@@ -101,7 +108,8 @@ public class TenancyAPITest {
         }
     }
 
-    @Test public void testUsersListAndGet() {
+    @Test
+    public void testUsersListAndGet() {
         TenancyAPI tenancyAPI = TestHelper.getTenancyAPI();
 
         try {
@@ -117,7 +125,8 @@ public class TenancyAPITest {
         }
     }
 
-    @Test public void testUsersCursor() {
+    @Test
+    public void testUsersCursor() {
         TenancyAPI tenancyAPI = TestHelper.getTenancyAPI();
 
         try {
@@ -135,11 +144,13 @@ public class TenancyAPITest {
         }
     }
 
-    @Test public void testUsersCursorWithPageSize() {
+    @Test
+    public void testUsersCursorWithPageSize() {
         testCursorWithPageSize(TestHelper.getTenancyAPI().users(), 10);
     }
 
-    @Test public void testAssetCursorWithPageSize() {
+    @Test
+    public void testAssetCursorWithPageSize() {
         testCursorWithPageSize(TestHelper.getTenancyAPI().assets(), 2);
     }
 
@@ -169,7 +180,8 @@ public class TenancyAPITest {
         }
     }
 
-    @Test public void testAssetsListAndGet() {
+    @Test
+    public void testAssetsListAndGet() {
         TenancyAPI tenancyAPI = TestHelper.getTenancyAPI();
 
         try {
@@ -191,7 +203,8 @@ public class TenancyAPITest {
         }
     }
 
-    @Test public void testUserCreateWithWallet() {
+    @Test
+    public void testUserCreateWithWallet() {
         TenancyAPI tenancyAPI = TestHelper.getTenancyAPI();
 
         try {
@@ -201,7 +214,7 @@ public class TenancyAPITest {
             Object[] arr = assets.toMap().values().toArray();
             String[] assetIds = new String[arr.length];
 
-            for (int i = 0; i < arr.length; ++i){
+            for (int i = 0; i < arr.length; ++i) {
                 assetIds[i] = (String) arr[i];
             }
 
@@ -215,7 +228,8 @@ public class TenancyAPITest {
         }
     }
 
-    @Test public void testWalletListAndGet(){
+    @Test
+    public void testWalletListAndGet() {
         TenancyAPI tenancyAPI = TestHelper.getTenancyAPI();
 
         try {
@@ -225,7 +239,7 @@ public class TenancyAPITest {
             Object[] arr = assets.toMap().values().toArray();
             String[] assetIds = new String[arr.length];
 
-            for (int i = 0; i < arr.length; ++i){
+            for (int i = 0; i < arr.length; ++i) {
                 assetIds[i] = (String) arr[i];
             }
 
@@ -239,7 +253,8 @@ public class TenancyAPITest {
         }
     }
 
-    @Test public void testHistoricalTransactionByTxHash(){
+    @Test
+    public void testHistoricalTransactionByTxHash() {
         TenancyAPI tenancyAPI = TestHelper.getTenancyAPI();
 
         try {
@@ -253,7 +268,8 @@ public class TenancyAPITest {
         }
     }
 
-    @Test public void testHistoricalBlock(){
+    @Test
+    public void testHistoricalBlock() {
         TenancyAPI tenancyAPI = TestHelper.getTenancyAPI();
 
         try {
@@ -267,39 +283,72 @@ public class TenancyAPITest {
         }
     }
 
-    @Test public void testHistoricalAssetBalance(){
+
+    @Test
+    public void testHistoricalRetrieveTransactions() {
         TenancyAPI tenancyAPI = TestHelper.getTenancyAPI();
 
         try {
-            String addr = "0x93b3d0b2894e99c2934bed8586ea4e2b94ce6bfd";
+            String address = "0x6590896988376a90326cb2f741cb4f8ace1882d5";
+            HDTransactionList transactions = tenancyAPI.historical().listTransactions(ethProtocol, ethNetwork, address);
+            assertFalse(transactions.getResults().isEmpty());
 
-            HDBalance balance = tenancyAPI.historical().getAssetBalance(ethProtocol, ethNetwork, addr);
-            assertNotNull(balance.getAddress());
-            assertEquals("addresses match", balance.getAddress(), addr);
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+
+        // filter by confirmations
+        try {
+            String address = "0x6590896988376a90326cb2f741cb4f8ace1882d5";
+            int confirmations = 1000;
+            HDFilters filters = new HDFilters();
+            filters.setConfirmations(confirmations);
+            HDTransactionList transactions = tenancyAPI.historical().listTransactions(ethProtocol, ethNetwork, address, filters);
+            boolean confirmationsOK = transactions.getResults().stream().filter(s -> s.getConfirmations() < 1000)
+                    .collect(Collectors.toList()).isEmpty();
+            assertTrue(confirmationsOK);
 
         } catch (Exception e) {
             fail(e.getMessage());
         }
     }
 
-    @Test public void testHistoricalContractBalance(){
+    @Test
+    public void testHistoricalAssetBalance() {
         TenancyAPI tenancyAPI = TestHelper.getTenancyAPI();
 
         try {
-            String addr = "0x93b3d0b2894e99c2934bed8586ea4e2b94ce6bfd";
-            String contractAddr = "0x1d7cf6ad190772cc6177beea2e3ae24cc89b2a10";
+            String address = "0x93b3d0b2894e99c2934bed8586ea4e2b94ce6bfd";
 
-            HDBalance balance = tenancyAPI.historical().getContractBalance(ethProtocol, ethNetwork, addr, contractAddr);
+            HDBalance balance = tenancyAPI.historical().getAssetBalance(ethProtocol, ethNetwork, address);
             assertNotNull(balance.getAddress());
-            assertEquals("addresses match", balance.getAddress(), addr);
-            assertEquals("contract addresses match", balance.getContract(), contractAddr);
+            assertEquals("addresses match", balance.getAddress(), address);
 
         } catch (Exception e) {
             fail(e.getMessage());
         }
     }
 
-    @Test public void testHistoricalStatus(){
+    @Test
+    public void testHistoricalContractBalance() {
+        TenancyAPI tenancyAPI = TestHelper.getTenancyAPI();
+
+        try {
+            String address = "0x93b3d0b2894e99c2934bed8586ea4e2b94ce6bfd";
+            String contractAddress = "0x1d7cf6ad190772cc6177beea2e3ae24cc89b2a10";
+
+            HDBalance balance = tenancyAPI.historical().getContractBalance(ethProtocol, ethNetwork, address, contractAddress);
+            assertNotNull(balance.getAddress());
+            assertEquals("addresses match", balance.getAddress(), address);
+            assertEquals("contract addresses match", balance.getContract(), contractAddress);
+
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    public void testHistoricalStatus() {
         TenancyAPI tenancyAPI = TestHelper.getTenancyAPI();
 
         try {

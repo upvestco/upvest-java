@@ -5,11 +5,11 @@ import java.util.Map;
 
 // HDFilters is for filtering historical Data API queries
 public class HDFilters {
-    public String before;
-    public String after;
-    public int confirmations;
-    public String cursor;
-    public int limit;
+    private String before;
+    private String after;
+    private int confirmations;
+    private String cursor;
+    private int limit;
 
     public String getBefore() {
         return before;

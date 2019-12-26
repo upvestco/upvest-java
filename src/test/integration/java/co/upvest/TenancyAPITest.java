@@ -8,6 +8,8 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -230,6 +232,65 @@ public class TenancyAPITest {
             assertEquals("ETH and ERC20 get combined in 1 wallet.", assetIds.length - 1, user.getWalletIds().length);
             assertTrue(TestHelper.isValidRecoveryKit(user.getRecoverykit()));
 
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test public void testWebhooksVerify() {
+        TenancyAPI tenancyAPI = TestHelper.getTenancyAPI();
+        String url = TestHelper.config.getJSONObject("webhooks").getString("webhook_verification_url");
+
+        try {
+            boolean isVerified = tenancyAPI.webhooks().verify(url);
+            assertTrue(isVerified);
+
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test public void testWebhooksCreate() {
+        TenancyAPI tenancyAPI = TestHelper.getTenancyAPI();
+        WebhookParams params = TestHelper.getWebhookParams();
+
+        try {
+            Webhook webhook = tenancyAPI.webhooks().create(params);
+
+            assertEquals(params.getVersion(), webhook.getVersion());
+            assertEquals(params.getStatus(), webhook.getStatus());
+
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test public void testWebhooksListAndGet() {
+        TenancyAPI tenancyAPI = TestHelper.getTenancyAPI();
+
+        try {
+            Webhook[] webhooks = tenancyAPI.webhooks().list().toArray();
+
+            for (Webhook webhook : webhooks) {
+                Webhook otherWebhook = tenancyAPI.webhooks().get(webhook.getId());
+
+                assertEquals(webhook.getUrl(), otherWebhook.getUrl());
+            }
+        } catch (IOException e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test public void testWebhooksDelete() {
+        TenancyAPI tenancyAPI = TestHelper.getTenancyAPI();
+        WebhookParams params = TestHelper.getWebhookParams();
+
+        try {
+            Webhook webhook = tenancyAPI.webhooks().create(params);
+            // TODO: test retrieve after delete
+            boolean isDeleted = tenancyAPI.webhooks().delete(webhook.getId());
+
+            assertTrue(isDeleted);
         } catch (Exception e) {
             fail(e.getMessage());
         }

@@ -8,6 +8,9 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -150,5 +153,26 @@ public class TestHelper {
 
         Wallet wallet = walletAdapter.fromJson(source);
         return wallet;
+    }
+
+    public static WebhookParams getWebhookParams() {
+        String url = TestHelper.config.getJSONObject("webhooks").getString("webhook_url");
+
+        WebhookParams params = new WebhookParams();
+        params.setUrl(url);
+        params.setName(String.format("test-webhook-%s",  TestHelper.getRandomHexString(8)));
+
+        Map<String, String> headers = new java.util.HashMap<>();
+        headers.put("X-Test", "Hello world!");
+        params.setHeaders(headers);
+
+        params.setVersion("1.2");
+        params.setStatus("ACTIVE");
+
+        List<String> event_filters = Arrays.asList(new String[] {"upvest.wallet.created", "ropsten.block.*", "upvest.echo.post"});
+        params.setEventFilters(event_filters);
+
+        params.setHMACSecretKey("abcdef");
+        return params;
     }
 }

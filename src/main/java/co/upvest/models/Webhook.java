@@ -18,6 +18,70 @@ public class Webhook implements Listable {
     private @NotNull String status;
     private @Nullable List<EventFilter> event_filters;
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getHMACSecretKey() {
+        return HMACSecretKey;
+    }
+
+    public void setHMACSecretKey(String HMACSecretKey) {
+        this.HMACSecretKey = HMACSecretKey;
+    }
+
+    public Map<String, String> getHeaders() {
+        return headers;
+    }
+
+    public void setHeaders(Map<String, String> headers) {
+        this.headers = headers;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public List<EventFilter> getEvent_filters() {
+        return event_filters;
+    }
+
+    public void setEvent_filters(List<EventFilter> event_filters) {
+        this.event_filters = event_filters;
+    }
+
     private static class EventFilter {
         private @Json(name = "event_noun") @NotNull String eventNoun;
         private @Json(name = "event_verb") @NotNull String eventVerb;

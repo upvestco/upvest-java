@@ -10,20 +10,13 @@ import java.util.stream.Collectors;
 
 public class WebhookParams {
 
-    private @NotNull
-    String url;
-    private @NotNull
-    String name;
-    private @NotNull
-    String hmac_secret_key;
-    private @Nullable
-    Map<String, String> headers;
-    private @NotNull
-    String version;
-    private @NotNull
-    String status;
-    private @NotNull
-    List<String> event_filters;
+    private @NotNull String url;
+    private @NotNull String name;
+    private @NotNull String hmac_secret_key;
+    private @Nullable Map<String, String> headers;
+    private @NotNull String version;
+    private @NotNull String status;
+    private @NotNull List<String> event_filters;
 
     public WebhookParams(String url, String name, String hmac_secret_key, Map<String, String> headers, String version, String status) {
         this.url = url;
@@ -34,13 +27,63 @@ public class WebhookParams {
         this.status = status;
     }
 
-    public WebhookParams(String url, String name, String hmac_secret_key, Map<String, String> headers, String version, String status, List<String> event_filters) {
+    public WebhookParams() {
+
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
         this.url = url;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
         this.name = name;
+    }
+
+    public String getHMACSecretKey() {
+        return hmac_secret_key;
+    }
+
+    public void setHMACSecretKey(String hmac_secret_key) {
         this.hmac_secret_key = hmac_secret_key;
+    }
+
+    public Map<String, String> getHeaders() {
+        return headers;
+    }
+
+    public void setHeaders(Map<String, String> headers) {
         this.headers = headers;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
         this.version = version;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
         this.status = status;
+    }
+
+    public List<String> getEventFilters() {
+        return event_filters;
+    }
+
+    public void setEventFilters(List<String> event_filters) {
         this.event_filters = event_filters;
     }
 

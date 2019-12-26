@@ -105,7 +105,7 @@ public class WebhooksEndpoint implements Webhook.Endpoint<Webhook> {
     public boolean verify(String verifyUrl) throws IOException {
         HttpUrl url = apiClient.getBaseUrl()
                 .addPathSegment("tenancy")
-                .addPathSegment("webhooks")
+                .addPathSegment("webhooks-verify")
                 .addPathSegment("")
                 .build();
 
@@ -117,7 +117,7 @@ public class WebhooksEndpoint implements Webhook.Endpoint<Webhook> {
                 .build();
 
         Response response = apiClient.getClient().newCall(request).execute();
-        return response.code() == 204;
+        return response.code() == 201;
     }
 
     public @NotNull Webhook get(@NotNull String id) throws IOException {

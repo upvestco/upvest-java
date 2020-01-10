@@ -20,6 +20,7 @@ public class TenancyAPI extends APIClient {
     private AssetsEndpoint assetsEndpoint;
     private WalletsEndpoint walletsEndpoint;
     private WebhooksEndpoint webhooksEndpoint;
+    private HistoricalDataEndpoint historicalEndpoint;
 
     public @NotNull TenancyAPI(@NotNull String key, @NotNull String secret, @NotNull String passphrase) {
         this(getDefaultHost(), key, secret, passphrase);
@@ -61,6 +62,12 @@ public class TenancyAPI extends APIClient {
         if (webhooksEndpoint == null)
             webhooksEndpoint = new WebhooksEndpoint(this);
         return webhooksEndpoint;
+    }
+
+    public @NotNull HistoricalDataEndpoint historical() {
+        if (historicalEndpoint == null)
+            historicalEndpoint = new HistoricalDataEndpoint(this);
+        return historicalEndpoint;
     }
 
     public @NotNull Echo echo(@NotNull String what) throws IOException {

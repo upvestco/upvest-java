@@ -1,10 +1,12 @@
 # Upvest client library for the JVM
 
+[![CircleCI](https://circleci.com/gh/upvestco/upvest-java.svg?style=svg)](https://circleci.com/gh/upvestco/upvest-java)
+
 Java client library for the [Upvest API](https://upvest.co/)
 
 ## Installation
 
-Step 1. Add the JitPack repository to your build file 
+Step 1. Add the JitPack repository to your build file
 
 Add it in your root build.gradle at the end of repositories:
 ```groovy
@@ -26,7 +28,7 @@ dependencies {
 
 ## Usage
 
-In order to retrieve your API credentials for using this Python client, you"ll need to [sign up with Upvest](https://login.upvest.co/sign-up).
+In order to retrieve your API credentials for using this Java client, you"ll need to [sign up with Upvest](https://login.upvest.co/sign-up).
 
 ### Tenancy API - API Keys Authentication
 The Upvest API uses the notion of _tenants_, which represent customers that build their platform upon the Upvest API. The end-users of the tenant (i.e. your customers), are referred to as _clients_. A tenant is able to manage their users directly (CRUD operations for the user instance) and is also able to initiate actions on the user"s behalf (create wallets, send transactions).
@@ -41,16 +43,16 @@ TenancyAPI tenancy = new TenancyAPI(BASE_URL, KEY, SECRET, PASSPHRASE)
 
 String username = "Example User";
 String password = "ex@mp1e p@55w0rd";
- 
+
 User exampleUser;
 
 try {
     // create user
     exampleUser = tenancy.users().create(username, password);
-    
+
     // delete user
     tenancy.users().delete(exampleUser.getUsername());
-    
+
     // list users
     for (User user : tenancy.users().list()){
         System.out.println(user.getUsername());
@@ -78,7 +80,7 @@ ClienteleAPI clientele = new ClienteleAPI(BASE_URL, auth, username, password);
 
 try {
     // list the first 5 wallets
-    Cursor<Wallet> wallets = clientele.wallets().list(5); 
+    Cursor<Wallet> wallets = clientele.wallets().list(5);
     while (Wallet wallet : wallets){
         System.out.println(wallet.getAddress());
         wallet.transactions().create(...);

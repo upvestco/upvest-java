@@ -19,6 +19,7 @@ public class TenancyAPI extends APIClient {
     private UsersEndpoint usersEndpoint;
     private AssetsEndpoint assetsEndpoint;
     private WalletsEndpoint walletsEndpoint;
+    private WebhooksEndpoint webhooksEndpoint;
     private HistoricalDataEndpoint historicalEndpoint;
 
     public @NotNull TenancyAPI(@NotNull String key, @NotNull String secret, @NotNull String passphrase) {
@@ -55,6 +56,12 @@ public class TenancyAPI extends APIClient {
         if (walletsEndpoint == null)
             walletsEndpoint = new WalletsEndpoint(this);
         return walletsEndpoint;
+    }
+
+    public @NotNull WebhooksEndpoint webhooks() {
+        if (webhooksEndpoint == null)
+            webhooksEndpoint = new WebhooksEndpoint(this);
+        return webhooksEndpoint;
     }
 
     public @NotNull HistoricalDataEndpoint historical() {

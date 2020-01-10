@@ -9,7 +9,6 @@ import com.squareup.moshi.*;
 import java.util.*;
 
 public class TransactionsEndpoint implements Transaction.Endpoint<Transaction> {
-
     private APIClient apiClient;
     private Wallet wallet;
 

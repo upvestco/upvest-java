@@ -16,7 +16,9 @@ public class Webhook implements Listable {
     private Map<String, String> headers;
     private @NotNull String version;
     private @NotNull String status;
-    private @Nullable List<EventFilter> event_filters;
+    // FIXME: change to event filter type when API returns consistent serialized event filters
+    // currently returns a mix of strings and dictionary types (type checks event filter type)
+    private @Nullable List<Object> event_filters;
 
     public String getId() {
         return id;
@@ -74,11 +76,11 @@ public class Webhook implements Listable {
         this.status = status;
     }
 
-    public List<EventFilter> getEvent_filters() {
+    public List<Object> getEvent_filters() {
         return event_filters;
     }
 
-    public void setEvent_filters(List<EventFilter> event_filters) {
+    public void setEvent_filters(List<Object> event_filters) {
         this.event_filters = event_filters;
     }
 

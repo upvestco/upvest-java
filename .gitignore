@@ -9,4 +9,4 @@ build
 bin
 .idea
 *.iml
-*test_config.json
+test_config.json

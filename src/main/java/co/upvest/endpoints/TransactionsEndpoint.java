@@ -57,8 +57,7 @@ public class TransactionsEndpoint implements Transaction.Endpoint<Transaction> {
      * Sign and broadcast complex transaction
      */
     public Transaction createComplex(String walletID, String Password, String transaction) {
-        Transaction txn = createComplex(walletID, Password, transaction, true);
-        return txn;
+        return createComplex(walletID, Password, transaction, true);
     }
 
     public Transaction createComplex(String walletID, String password, String transaction, boolean fund) {
@@ -88,8 +87,7 @@ public class TransactionsEndpoint implements Transaction.Endpoint<Transaction> {
      * Sign a raw transaction and broadcast it to the blockchain.
      */
     public Transaction createRaw(String walletID, String password, String rawTx) {
-        Transaction txn = createRaw(walletID, password, rawTx, "base64", true);
-        return txn;
+        return createRaw(walletID, password, rawTx, "base64", true);
     }
 
     public Transaction createRaw(String walletID, String password, String rawTx, String inputFormat, boolean fund) {
@@ -112,8 +110,7 @@ public class TransactionsEndpoint implements Transaction.Endpoint<Transaction> {
                 .build();
 
         Response response = apiClient.getClient().newCall(request).execute();
-        Transaction txn = transactionAdapter.fromJson(response.body().source());
-        return txn;
+        return transactionAdapter.fromJson(response.body().source());
     }
 
     public Cursor<Transaction> list() throws IOException {

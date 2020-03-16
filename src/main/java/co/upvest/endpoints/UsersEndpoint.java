@@ -75,6 +75,11 @@ public class UsersEndpoint implements User.Endpoint<User> {
         return users;
     }
 
+    public @NotNull User create(@NotNull String username, @NotNull String password) throws IOException {
+        User user = create(username, password, new String[]{});
+        return user;
+    }
+    
     public @NotNull User create(@NotNull String username, @NotNull String password, @NotNull String[] assetIds) throws IOException {
         HttpUrl url = apiClient.getBaseUrl()
             .addPathSegment("tenancy")

@@ -56,11 +56,11 @@ public class TransactionsEndpoint implements Transaction.Endpoint<Transaction> {
     /**
      * Sign and broadcast complex transaction
      */
-    public Transaction createComplex(String walletID, String Password, String transaction) {
+    public Transaction createComplex(String walletID, String Password, String transaction) throws IOException {
         return createComplex(walletID, Password, transaction, true);
     }
 
-    public Transaction createComplex(String walletID, String password, String transaction, boolean fund) {
+    public Transaction createComplex(String walletID, String password, String transaction, boolean fund) throws IOException {
         HttpUrl url = apiClient.getBaseUrl()
                 .addPathSegment(walletID)
                 .addPathSegment("transactions")
@@ -86,16 +86,16 @@ public class TransactionsEndpoint implements Transaction.Endpoint<Transaction> {
     /**
      * Sign a raw transaction and broadcast it to the blockchain.
      */
-    public Transaction createRaw(String walletID, String password, String rawTx) {
+    public Object createRaw(String walletID, String password, String rawTx) throws IOException {
         return createRaw(walletID, password, rawTx, "base64", true);
     }
 
-    public Transaction createRaw(String walletID, String password, String rawTx, String inputFormat, boolean fund) {
+    public Object createRaw(String walletID, String password, String rawTx, String inputFormat, boolean fund) throws IOException{
         HttpUrl url = apiClient.getBaseUrl()
                 .addPathSegment(walletID)
                 .addPathSegment("transactions")
                 .addPathSegment("raw")
-                .addPathSegment("")
+                //.addPathSegment("")
                 .build();
 
         Map<String, Object> params = new HashMap<String, Object>();
@@ -110,7 +110,8 @@ public class TransactionsEndpoint implements Transaction.Endpoint<Transaction> {
                 .build();
 
         Response response = apiClient.getClient().newCall(request).execute();
-        return transactionAdapter.fromJson(response.body().source());
+        Transaction transaction = transactionAdapter.fromJson(response.body().source());
+        return transaction;
     }
 
     public Cursor<Transaction> list() throws IOException {

@@ -34,7 +34,7 @@ public class TransactionsEndpoint implements Transaction.Endpoint<Transaction> {
                 .addPathSegment("transactions")
                 .addPathSegment("")
                 .build();
-        
+
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("password", password);
         params.put("asset_id", assetId);
@@ -49,7 +49,68 @@ public class TransactionsEndpoint implements Transaction.Endpoint<Transaction> {
 
         Response response = apiClient.getClient().newCall(request).execute();
         Transaction transaction = transactionAdapter.fromJson(response.body().source());
-        
+
+        return transaction;
+    }
+
+    /**
+     * Sign and broadcast complex transaction
+     */
+    public Transaction createComplex(String walletID, String Password, String transaction) throws IOException {
+        return createComplex(walletID, Password, transaction, true);
+    }
+
+    public Transaction createComplex(String walletID, String password, String transaction, boolean fund) throws IOException {
+        HttpUrl url = apiClient.getBaseUrl()
+                .addPathSegment(walletID)
+                .addPathSegment("transactions")
+                .addPathSegment("complex")
+                .addPathSegment("")
+                .build();
+
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("password", password);
+        params.put("fund", fund);
+        params.put("tx", transaction);
+
+        Request request = new Request.Builder()
+                .url(url)
+                .post(RequestBody.create(JSON, objectAdapter.toJson(params)))
+                .build();
+
+        Response response = apiClient.getClient().newCall(request).execute();
+        Transaction txn = transactionAdapter.fromJson(response.body().source());
+        return txn;
+    }
+
+    /**
+     * Sign a raw transaction and broadcast it to the blockchain.
+     */
+    public Object createRaw(String walletID, String password, String rawTx) throws IOException {
+        return createRaw(walletID, password, rawTx, "base64", true);
+    }
+
+    public Object createRaw(String walletID, String password, String rawTx, String inputFormat, boolean fund) throws IOException{
+        HttpUrl url = apiClient.getBaseUrl()
+                .addPathSegment(walletID)
+                .addPathSegment("transactions")
+                .addPathSegment("raw")
+                //.addPathSegment("")
+                .build();
+
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("input_format", inputFormat);
+        params.put("password", password);
+        params.put("raw_tx", rawTx);
+        params.put("fund", fund);
+
+        Request request = new Request.Builder()
+                .url(url)
+                .post(RequestBody.create(JSON, objectAdapter.toJson(params)))
+                .build();
+
+        Response response = apiClient.getClient().newCall(request).execute();
+        Transaction transaction = transactionAdapter.fromJson(response.body().source());
         return transaction;
     }
 
@@ -62,13 +123,13 @@ public class TransactionsEndpoint implements Transaction.Endpoint<Transaction> {
      */
     public Cursor<Transaction> list(int pageSize) throws IOException {
         HttpUrl url =  apiClient.getBaseUrl()
-            .addPathSegment("kms")
-            .addPathSegment("wallets")
-            .addPathSegment(wallet.getId())
-            .addPathSegment("transactions")
-            .addPathSegment("")
-            .addQueryParameter("page_size", String.valueOf(pageSize))
-            .build();
+                .addPathSegment("kms")
+                .addPathSegment("wallets")
+                .addPathSegment(wallet.getId())
+                .addPathSegment("transactions")
+                .addPathSegment("")
+                .addQueryParameter("page_size", String.valueOf(pageSize))
+                .build();
 
         Request request = new Request.Builder()
                 .url(url)
@@ -86,15 +147,15 @@ public class TransactionsEndpoint implements Transaction.Endpoint<Transaction> {
      */
     public Cursor<Transaction> list(String cursor) throws IOException {
         HttpUrl url;
-        
+
         if (cursor == null){
             url = apiClient.getBaseUrl()
-            .addPathSegment("kms")
-            .addPathSegment("wallets")
-            .addPathSegment(wallet.getId())
-            .addPathSegment("transactions")
-            .addPathSegment("")
-            .build();
+                    .addPathSegment("kms")
+                    .addPathSegment("wallets")
+                    .addPathSegment(wallet.getId())
+                    .addPathSegment("transactions")
+                    .addPathSegment("")
+                    .build();
         } else {
             url = HttpUrl.parse(cursor).newBuilder().scheme("https").build();
         }
@@ -106,7 +167,7 @@ public class TransactionsEndpoint implements Transaction.Endpoint<Transaction> {
         Response response = apiClient.getClient().newCall(request).execute();
         Cursor<Transaction> transactions = transactionCursorAdapter.fromJson(response.body().source());
         transactions.setEndpoint(this);
-        
+
         return transactions;
     }
 
@@ -125,7 +186,7 @@ public class TransactionsEndpoint implements Transaction.Endpoint<Transaction> {
 
         Response response = apiClient.getClient().newCall(request).execute();
         Transaction transaction = transactionAdapter.fromJson(response.body().source());
-        
+
         return transaction;
     }
 

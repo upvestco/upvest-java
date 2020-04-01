@@ -32,6 +32,7 @@ public class OAuth extends Auth {
 
         Request request = originalRequest.newBuilder()
             .header("Authorization", "Bearer " + accessToken)
+            .header("User-Agent", APIClient.getDefaultUserAgent())
             .method(originalRequest.method(), originalRequest.body())
             .build();
         

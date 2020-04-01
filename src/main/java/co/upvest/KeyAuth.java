@@ -8,6 +8,7 @@ import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import okhttp3.*;
 
+
 public class KeyAuth extends Auth {
 
     private String key;
@@ -44,6 +45,7 @@ public class KeyAuth extends Auth {
             .header("X-UP-API-Timestamp", timestamp)
             .header("X-UP-API-Signature", signature)
             .header("X-UP-API-Signed-Path", path)
+            .header("User-Agent", APIClient.getDefaultUserAgent())
             .method(originalRequest.method(), originalRequest.body())
             .build();
         

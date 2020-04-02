@@ -13,7 +13,7 @@ public abstract class APIClient {
 
     public static final String API_VERSION = "1.0";
 
-    public static String defaultUserAgent = String.format("Upvest-Java/", API_VERSION);
+    public static String defaultUserAgent = String.format("Upvest-Java/%s", API_VERSION);
 
     // some calls take longer time than the default timeout would accept
     static final int CONNECT_TIMEOUT = 100;

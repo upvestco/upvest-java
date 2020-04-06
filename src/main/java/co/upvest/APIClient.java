@@ -13,6 +13,8 @@ public abstract class APIClient {
 
     public static final String API_VERSION = "1.0";
 
+    public static String defaultUserAgent = String.format("Upvest-Java/%s", API_VERSION);
+
     // some calls take longer time than the default timeout would accept
     static final int CONNECT_TIMEOUT = 100;
     static final int WRITE_TIMEOUT = 100;
@@ -39,6 +41,14 @@ public abstract class APIClient {
 
     public static void setDefaultHost(String defaultHost) {
         APIClient.defaultHost = defaultHost;
+    }
+
+    public static String getDefaultUserAgent() {
+        return defaultUserAgent;
+    }
+
+    public static void setDefaultUserAgent(String userAgent) {
+        APIClient.defaultUserAgent = userAgent;
     }
 
     public OkHttpClient getClient() {
